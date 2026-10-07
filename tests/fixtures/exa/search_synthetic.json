@@ -1,0 +1,12 @@
+{
+ "requestId": "synthetic-fixture",
+ "resolvedSearchType": "instant",
+ "results": [
+  {"id": "https://example.com/a", "url": "https://example.com/a", "title": "Fed officials signal patience",
+   "publishedDate": "2026-02-20T00:00:00.000Z", "author": null,
+   "highlights": ["Officials said they would wait for more data before adjusting rates."], "highlightScores": [0.5]},
+  {"id": "https://example.org/b", "url": "https://example.org/b", "title": "Undated explainer",
+   "publishedDate": null, "author": null, "highlights": ["An explainer on how the FOMC votes."], "highlightScores": [0.3]}
+ ],
+ "costDollars": {"total": 0.009, "search": {"neural": 0.004}, "contents": {"highlights": 0.005}}
+}

@@ -48,6 +48,17 @@ class Question(_Base):
     source_url: str
 
 
+def prompt_fields(q: Question) -> dict:
+    """The ONLY question data any prompt template may see. Never outcome, p_mkt, resolution
+    dates, volume or URLs (leakage guard, tested in tests/test_dataset.py and tests/test_reason.py)."""
+    return {
+        "title": q.title,
+        "description": q.description,
+        "today": q.t0.strftime("%Y-%m-%d"),
+        "scheduled_close": q.scheduled_close.strftime("%Y-%m-%d"),
+    }
+
+
 class Evidence(_Base):
     qid: str
     query: str

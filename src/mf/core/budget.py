@@ -55,13 +55,15 @@ def read_ledger(path: str | Path) -> list[LedgerEntry]:
 
 class BudgetGuard:
     def __init__(self, ledger_path: str | Path, caps, run_id: str, max_usd: float | None = None,
-                 now_fn: Callable = timeutil.now):
+                 now_fn: Callable = timeutil.now, pending_fn: Callable[[], float] | None = None):
         """caps: a BudgetCfg (anthropic_total_usd, anthropic_backtest_usd, exa_monthly_usd, ...)."""
         self.ledger_path = Path(ledger_path)
         self.caps = caps
         self.run_id = run_id
         self.max_usd = caps.per_run_default_usd if max_usd is None else max_usd
         self.now_fn = now_fn
+        # $ of submitted-but-uncollected batches (durable reservations kept in state/batches/)
+        self.pending_fn = pending_fn or (lambda: 0.0)
         self._open: dict[int, Reservation] = {}
         self._ids = itertools.count(1)
         self.entries = read_ledger(self.ledger_path)
@@ -83,8 +85,11 @@ class BudgetGuard:
         return total
 
     def reserved(self, provider: str | None = None, month: str | None = None) -> float:
-        return sum(r.est_usd for r in self._open.values()
-                   if (provider is None or r.provider == provider) and (month is None or r.month == month))
+        tot = sum(r.est_usd for r in self._open.values()
+                  if (provider is None or r.provider == provider) and (month is None or r.month == month))
+        if provider in (None, "anthropic"):
+            tot += self.pending_fn()
+        return tot
 
     def run_spent(self) -> float:
         return self.spent(run_id=self.run_id)
@@ -141,6 +146,13 @@ class BudgetGuard:
             f.write(entry.model_dump_json() + "\n")
         self.entries.append(entry)
         return entry
+
+    def record(self, provider: str, op: str, model: str | None, cache_key: str, actual_usd: float,
+               input_tokens: int | None = None, output_tokens: int | None = None,
+               est_usd: float = 0.0) -> LedgerEntry:
+        """Ledger entry for spend already covered by a durable reservation (batch results)."""
+        r = Reservation(-1, provider, op, est_usd, timeutil.month_key(self.now_fn()))
+        return self.settle(r, actual_usd, model, cache_key, input_tokens, output_tokens)
 
     # ---- reporting ---------------------------------------------------------------------------
     def summary(self) -> dict:

@@ -1,0 +1,90 @@
+{
+ "request": {
+  "contents": {
+   "highlights": {
+    "maxCharacters": 1500
+   },
+   "maxAgeHours": -1
+  },
+  "endPublishedDate": "2026-03-01T00:00:00.000Z",
+  "excludeDomains": [
+   "electionbettingodds.com",
+   "kalshi.com",
+   "manifold.markets",
+   "metaculus.com",
+   "oddschecker.com",
+   "polymarket.com",
+   "polymarketanalytics.com",
+   "predictit.org",
+   "reddit.com",
+   "twitter.com",
+   "wikipedia.org",
+   "x.com"
+  ],
+  "numResults": 5,
+  "query": "Federal Reserve interest rate decision outlook",
+  "type": "fast"
+ },
+ "response": {
+  "costDollars": {
+   "search": {
+    "neural": 0.007
+   },
+   "total": 0.007
+  },
+  "requestId": "4004aa88bc5f90cd30577f986498add1",
+  "resolvedSearchType": "",
+  "results": [
+   {
+    "highlights": [
+     "(FOMC) meetings. This market will resolve to the amount of basis points the upper bound of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's October 2026 meeting. If the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps) The resolution source for this market is the FOMC’s statement after its meeting scheduled for October 27-28, 2026 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm. The level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm. This market may resolve as soon as the FOMC’s statement for their October meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting,\n...\nThe current frontrunner for \"Fed Decision in October?\" is \"No change\" at 83%, meaning the market assigns a 83% chance to that outcome. The next closest outcome is \"25 bps increase\" at 17%. These odds update in real-time as traders buy and sell shares, so they reflect the latest collective view of what's most likely to happen. Check back frequently or bookmark this page to follow how the odds shift as new information emerges."
+    ],
+    "id": "https://likelycast.com/event/fed-decision-in-october-20260617190323537",
+    "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/fed-decision-in-september-762-c4RyWuxRPo1L.jpg",
+    "text": null,
+    "title": "Fed Decision in October? - LikelyCast",
+    "url": "https://likelycast.com/event/fed-decision-in-october-20260617190323537"
+   },
+   {
+    "highlights": [
+     "of the target federal funds rate is changed by versus the level it was prior to the Federal Reserve's October 2026 meeting. If the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps) The resolution source for this market is the FOMC’s statement after its meeting scheduled for October 27-28, 2026 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm. The level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm. This market may resolve as soon as the FOMC’s statement for their October meeting with relevant data is issued. If no statement is released by the end date of the next scheduled meeting, this market will resolve to the \"No change\" bracket.Elevated inflation pressures and a divided FOMC underpin the 71.5% implied probability of no change at the October 27-28 meeting, with a 24.5% chance of a 25 basis point hike. The federal funds rate has held at 3.50-3.75% through five consecutive meetings amid July CPI at 3.4% year-over-year and core readings near 2.5%, reflecting lingering energy shocks from Middle East tensions. July FOMC minutes released August 19 highlighted a 9-3 vote to hold, with three"
+    ],
+    "id": "https://polymarket.copilot.markets/uk/event/fed-decision-in-october-20260617190323537",
+    "text": null,
+    "title": "",
+    "url": "https://polymarket.copilot.markets/uk/event/fed-decision-in-october-20260617190323537"
+   },
+   {
+    "highlights": [
+     "The Federal Reserve's October 2026 FOMC meeting is scheduled for Tuesday–Wednesday, October 27–28, 2026, with the rate decision and statement due on Wednesday, October 28. The official 2026 calendar lists no Summary of Economic Projections for this meeting — projections belong to the September and December sessions. The target range for the federal funds rate is 3.75%–4.00% after the September 16, 2026 statement passed a 25-basis-point increase by a 12–0 vote, so the October contracts measure from that new baseline. At the October 4, 14:05 UTC check, the exact Polymarket event Fed Decision in October? remained active and open with five rate-change buckets, about $24,990,362 in cumulative volume, $684,226 in 24-hour volume, and $3,106,117 in liquidity — and its board had flipped again since September 23: the October 2 September jobs report (+29,000 payrolls, unemployment up to 4.2%, −60,000 in combined revisions) moved no change to 82.5¢ against 16.5¢ for another 25-basis-point increase. The outcome is unknown. This guide separates the fixed calendar from the changing policy baseline, market prices, and the written rules that control resolution.\n...\n— 60.5 cents for a 25-basis-point hike on September 23. The October 2 September jobs report (29,000 payrolls, unemployment up to 4.2 percent, combined revisions of −60,000) reversed that: no change traded 83.5 cents on the print day and 82.5 cents at the October 4 check, with the hike bucket down to 16.5 cents."
+    ],
+    "id": "https://polymarkettrader.com/events/fed-fomc-october-2026/",
+    "image": "https://polymarkettrader.com/og-image.png",
+    "text": null,
+    "title": "October 2026 Fed Decision: Markets Lean Toward a Hold at 3.75%–4.00%",
+    "url": "https://polymarkettrader.com/events/fed-fomc-october-2026/"
+   },
+   {
+    "highlights": [
+     "was prior to the Federal Reserve's October 2026 meeting. If the target federal funds rate is changed to a level not expressed in the displayed options, the change will be rounded up to the nearest 25 and will resolve to the relevant bracket. (e.g. if there's a cut/increase of 12.5 bps it will be considered to be 25 bps) The resolution source for this market is the FOMC’s statement after its meeting scheduled for October 27-28, 2026 according to the official calendar: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm. The level and change of the target federal funds rate is also published at the official website of the Federal Reserve at https://www.federalreserve.gov/monetarypolicy/openmarket.htm. This market may resolve as soon as the FOMC’s\n...\n## Frequently Asked Questions\n\n How many platforms track \"Fed Decision in October\"? \n\n 2 platforms currently quote this market: Gemini, Polymarket. Odds Reference aggregates live prices from each and shows them side by side. \n\n What is the current frontrunner for \"Fed Decision in October\"? \n\n \"No change\" is the current frontrunner at an implied probability of 82%, based on the latest prices across tracked platforms. \n\n Do platforms disagree on the price for \"Fed Decision in October\"? \n\n Yes — the largest current disagreement is on \"No change\", where prices differ by 20.5 percentage points across platforms. \n\n When does \"Fed Decision in October\" resolve? \n\n This market is scheduled to resolve on October 29, 2026."
+    ],
+    "id": "https://oddsreference.com/markets/economics/fed-decision-in-october",
+    "image": "https://oddsreference.com/og-default.png",
+    "text": null,
+    "title": "Fed Decision in October? Odds Compared Across 2 Platforms | Odds Reference",
+    "url": "https://oddsreference.com/markets/economics/fed-decision-in-october"
+   },
+   {
+    "highlights": [
+     "prediction markets put a hold at the Oct 27–28, 2026 FOMC meeting at 80% — the base case on Kalshi's KXFED ladder. The full split is 19% hike, 80% hold, 1% cut. The Bayesian model reprices this after every CPI, NFP, and PCE release, so the number moves with the data.\n...\nHike 19% Hold 80% Cut 1%(hike = 25bp + 50bp)\n...\nCore CPI prints\n...\n• Energy prices\n...\n- • Payrolls solid (NFP ... 50K ... with unemployment flat\n- • Chair and dots keep signalling ... tightening is needed\n...\nThe Oct 27–28, 2026 Federal Open Market Committee meeting is one of 8 scheduled FOMC meetings in 2026 where the Fed sets the federal funds rate target range. Prediction markets on Kalshi allow traders to take a position on the outcome — cut 50bp, cut 25bp, hold, hike 25bp, or hike 50bp — with each contract price reflecting the market-implied probability of that outcome.\n...\nKalshi prediction markets price the Oct 27–28, 2026 FOMC meeting at 19% hike, 80% hold, and 1% cut as of the latest snapshot. Probabilities update every 5 minutes and are shown per strike on this page.\n...\nAs of the latest snapshot, Kalshi prediction markets price a hold at the Oct 27–28, 2026 FOMC meeting at 80% — currently the base case. The full ladder reads 19% hike, 80% hold, 1% cut. That is a live, money-backed read, not a forecast, and the Bayesian model on this page updates it automatically after every major economic data release (CPI, NFP, PCE)."
+    ],
+    "id": "https://predictionmarketspicks.com/tools/fed-rate-tracker/october-2026",
+    "image": "https://predictionmarketspicks.com/tools/fed-rate-tracker/october-2026/opengraph-image?e57a0ab2a8cac6bf",
+    "text": null,
+    "title": "October 2026 FOMC Prediction — Will the Fed Hold Rates?",
+    "url": "https://predictionmarketspicks.com/tools/fed-rate-tracker/october-2026"
+   }
+  ],
+  "searchTime": 585.2
+ }
+}

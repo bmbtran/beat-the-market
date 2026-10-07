@@ -21,7 +21,17 @@ def _todo(name: str) -> None:
 @app.command("build-dataset")
 def build_dataset(refresh: bool = typer.Option(False, help="Ignore cached HTTP responses")) -> None:
     """Pull Kalshi + Polymarket candidates, filter, pick t0, price@t0, split, write questions.jsonl."""
-    _todo("build-dataset")
+    import json
+
+    from mf.data.dataset import build
+
+    card = build(refresh=refresh, log=lambda m: typer.echo(m))
+    typer.echo("FILTER FUNNEL (main):")
+    typer.echo(json.dumps(card["funnel_main"], indent=2))
+    typer.echo("FILTER FUNNEL (canary):")
+    typer.echo(json.dumps(card["funnel_canary"], indent=2))
+    for k in ("all", "dev", "test", "canary"):
+        typer.echo(f"{k}: {json.dumps(card[k])}")
 
 
 @app.command()
@@ -115,12 +125,17 @@ def smoke(
     exa_type: Optional[str] = typer.Option(None, "--exa-type"),
 ) -> None:
     """Tiny paid smoke test of Haiku, Sonnet, Batch and Exa (~$0.07)."""
-    _todo("smoke")
+    from mf.smoke import run
+
+    raise typer.Exit(run(allow_spend, exa_type, log=lambda m: typer.echo(m)))
 
 
 @fixtures_app.command("record")
 def fixtures_record() -> None:
-    _todo("fixtures record")
+    from mf.data.fixtures import record
+
+    paths = record(log=lambda m: typer.echo(m))
+    typer.echo(f"{len(paths)} fixtures recorded")
 
 
 @batch_app.command("resume")

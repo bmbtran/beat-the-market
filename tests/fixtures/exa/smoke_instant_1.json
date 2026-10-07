@@ -1,0 +1,104 @@
+{
+ "request": {
+  "contents": {
+   "highlights": {
+    "maxCharacters": 1500
+   },
+   "maxAgeHours": -1
+  },
+  "endPublishedDate": "2026-03-01T00:00:00.000Z",
+  "excludeDomains": [
+   "copilot.markets",
+   "electionbettingodds.com",
+   "kalshi.com",
+   "kalshiscan.com",
+   "likelycast.com",
+   "macroodds.com",
+   "manifold.markets",
+   "metaculus.com",
+   "oddschecker.com",
+   "oddsreference.com",
+   "polymarket.com",
+   "polymarketanalytics.com",
+   "polymarkettrader.com",
+   "predictionmarketspicks.com",
+   "predictit.org",
+   "reddit.com",
+   "twitter.com",
+   "wikipedia.org",
+   "x.com"
+  ],
+  "numResults": 5,
+  "query": "US government shutdown negotiations Congress",
+  "type": "instant"
+ },
+ "response": {
+  "costDollars": {
+   "search": {
+    "neural": 0.004
+   },
+   "total": 0.004
+  },
+  "requestId": "3b8d8542782c3d87ec15ef5f26034564",
+  "resolvedSearchType": "",
+  "results": [
+   {
+    "highlights": [
+     "House Minority Leader Hakeem Jeffries said Democratic lawmakers on Capitol Hill are “ready to sit down to work things out,” after President Donald Trump said Monday that he’d be open to striking a deal with Democrats on the shutdown fight.\n...\nWASHINGTON (AP) — President Donald Trump cracked the door slightly to negotiations with Democrats on the health care subsidies they’ve made central to the shutdown fight, then abruptly closed it Monday, leaving the two sides once again at a seemingly intractable impasse.\n...\non Capitol Hill are “ready to sit down to work things out,” after President Donald Trump said Monday that he’d be open to striking a\n...\nBefore Trump walked back his remarks, the two Democratic leaders in Congress, Sen. Chuck Schumer and Rep. Hakeem Jeffries, has both denied there were any negotiations with Trump. Jeffries said the White House “has gone radio silent” since a meeting in the Oval Office last week.\n...\nEarlier in the day, the two sides dug in. House Speaker"
+    ],
+    "id": "https://apnews.com/article/government-shutdown-trump-congress-7d7e6f9b4e52d05b692cc40ec6c96cf3",
+    "image": "https://dims.apnews.com/dims4/default/854a3cf/2147483647/strip/true/crop/6000x3998+0+1/resize/980x653!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2Ff4%2Fdc%2F2b1ecd6022a44075d84002388b25%2F04d979a5b2ef4a04ae0a064194b32557",
+    "text": null,
+    "title": "Trump says he's open to shutdown deal with Democrats | AP News",
+    "url": "https://apnews.com/article/government-shutdown-trump-congress-7d7e6f9b4e52d05b692cc40ec6c96cf3"
+   },
+   {
+    "author": "Erin Hale",
+    "highlights": [
+     "US President Donald Trump says Democrats must end the shutdown before talks can start after six days of gridlock.\n...\nUnited States President Donald Trump suggested on Monday that he was ready to negotiate with Democrats over healthcare subsidies to break a deadlock over the continuing government shutdown, before walking back on that offer.\n\nTrump put the blame for the shutdown, now entering its seventh day, on Democrats in a post on social media, where he said they must end the shutdown before substantive negotiations can begin over healthcare policy – the key issue underlying the shutdown.\n...\n“We have a negotiation going on right now with the Democrats that could lead to very good things, and I’m talking about good things with regard to healthcare,” Trump was quoted as saying.\n\nSenate Minority Leader Chuck Schumer, one of the Democratic Party’s highest-ranking members, quickly denied that Democrats were in talks with Trump.\n...\ncame as the Senate on Monday evening again failed to pass a Republican-sponsored bill to extend government spending until the end of November\n...\nDemocrats hold a minority in both houses of Congress, and they are trying to use the spending bill to force Republicans to negotiate over critical healthcare spending.\n\nDemocrats want Congress to extend expiring subsidies before the US healthcare enrollment period begins in November and reverse cuts to Medicaid assistance for low-income and disabled US residents."
+    ],
+    "id": "https://www.aljazeera.com/news/2025/10/7/trump-walks-back-offer-to-talk-to-democrats-as-government-shutdown-extends",
+    "image": "https://www.aljazeera.com/wp-content/uploads/2025/10/2025-10-06T234431Z_1186391928_RC2M6HAAJDEW_RTRMADP_3_USA-SHUTDOWN-1759803764.jpg?resize=1920%2C1440",
+    "publishedDate": "2025-10-07T00:00:00.000Z",
+    "text": null,
+    "title": "Trump walks back offer to talk to Democrats as government shutdown extends | Donald Trump News | Al Jazeera",
+    "url": "https://www.aljazeera.com/news/2025/10/7/trump-walks-back-offer-to-talk-to-democrats-as-government-shutdown-extends"
+   },
+   {
+    "favicon": "https://www.politico.com/favicon.ico?v=2",
+    "highlights": [
+     "White House spokesperson Abigail Jackson said in a statement that Trump and congressional Republicans “are all in complete lockstep and have been consistent” in saying the government must reopen before health care or any policy issues can be discussed.\n...\nAs far as congressional Republicans are concerned, the politics of government shutdowns is straightforward: Isolate the Senate Democrats who are blocking a House-passed bill to reopen the government and make them own the consequences of having agencies shuttered.\n...\nat the end of the year. They are pushing Republicans to engage now while Johnson and Thune insist the problem can be dealt with later,\n...\nSome progress has been made behind the scenes toward at least establishing lines of bipartisan communication. Some rank-and-file senators are already discussing potential shutdown off-ramps involving the ACA subsidies and unfinished fiscal 2026 appropriations bills.\n\nThe person close to the White House said the administration has"
+    ],
+    "id": "https://www.politico.com/news/2025/10/07/shutdown-republicans-disarray-00597018",
+    "image": "https://www.politico.com/dims4/default/resize/1200/quality/90/format/jpg?url=https%3A%2F%2Fstatic.politico.com%2Fc0%2F0a%2F342bb70e4a1cba6a140af041f516%2Fu-s-congress-69131.jpg",
+    "publishedDate": "2025-10-07T00:00:00.000Z",
+    "text": null,
+    "title": "Republicans are in disarray one week into the shutdown - POLITICO",
+    "url": "https://www.politico.com/news/2025/10/07/shutdown-republicans-disarray-00597018"
+   },
+   {
+    "highlights": [
+     "No negotiations, at least publicly, are underway, but behind the scenes quiet talks are emerging. Clusters of lawmakers, Republicans and Democrats, are meeting privately, searching for ways out of the impasse, which hinges on striking a deal for preserving health care subsidies.\n...\nThe Republicans who have majority control in Congress believe they have the upper hand politically, as they fend off Democratic demands to quickly fund health insurance subsidies as part of any plan to end the shutdown.\n...\nA loosely formed collection of senators, Republicans and Democrats, have bantered about options for addressing the health insurance problem. Some of them met over Thai food dinner. \n\nRepublican Sen. Susan Collins of Maine has offered her own plan for kickstarting talks. It involves re-opening the government now, but with a “commitment,” she said, to discussing the health care issue.\n\nAnother option floated by GOP Sen. Mike Rounds of South Dakota, a former state governor, is a temporary"
+    ],
+    "id": "https://apnews.com/article/trump-shutdown-federal-workers-pay-health-care-415768faa14b4e54525d5e6d18ac97b4",
+    "image": "https://dims.apnews.com/dims4/default/92c7d28/2147483647/strip/true/crop/7071x4712+0+2/resize/980x653!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2Fc7%2Fd4%2F04a39c648af4e3e7128a452748ac%2F4e5ec89153f740d8871a984d693ffae3",
+    "text": null,
+    "title": "Shutdown grinds into a second week as tempers flare at the US Capitol | AP News",
+    "url": "https://apnews.com/article/trump-shutdown-federal-workers-pay-health-care-415768faa14b4e54525d5e6d18ac97b4"
+   },
+   {
+    "author": "Jake Sherman, Andrew Desiderio, Laura Weiss, Briana Reilly",
+    "highlights": [
+     "Speaker Mike Johnson said today that he would seek “dramatic” changes to the enhanced Obamacare premium subsidies in any future negotiations, throwing cold water on the idea that Congress could reach a quick resolution over the policy issue at the center of the shutdown.\n...\n> “There are lots of conversations and deliberations and discussions right now, even bipartisan, amongst members about necessary changes that would have to be made — pretty dramatic changes — to even have that considered on the floor.”\n\nJohnson’s comments track with what many Hill Republicans and the White House have been saying for months. Republicans want to drastically overhaul the tax credits, while Democrats want a straightforward extension.\n\nMeanwhile, House Minority Leader Hakeem Jeffries dug in even deeper. Jeffries said a one-year extension of the tax credits would be a non-starter for Democrats. Some Republicans in both chambers have pushed that option. Several of Jeffries’ Frontliners are also backing that path.\n...\ntwo-year extension ... midterms makes more ... , even if it is more expensive.\n...\nJeffries then clarified that Democrats have an “open mind,” but it depends “on the merits of what is prevented in good faith.” Jeffries added that the suggestion that the subsidies are for the wealthy is “ludicrous.”\n\nSo while moderates talk, House leaders sound as entrenched as ever on the Obamacare divide."
+    ],
+    "id": "https://punchbowl.news/article/house/johnson-jeffries-obamacare-credits/",
+    "image": "https://punchbowl.news/wp-content/uploads/10725-Midday-3-20251007-124505pm.jpg",
+    "publishedDate": "2025-10-07T00:00:00.000Z",
+    "text": null,
+    "title": "Johnson, Jeffries move further apart on Obamacare credits - Punchbowl News",
+    "url": "https://punchbowl.news/article/house/johnson-jeffries-obamacare-credits/"
+   }
+  ],
+  "searchTime": 525.7
+ }
+}

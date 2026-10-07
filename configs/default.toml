@@ -60,4 +60,7 @@ per_run_default_usd = 5.0     # every CLI command also takes --max-usd
 [exa_blocklist]
 domains = ["polymarket.com","kalshi.com","manifold.markets","metaculus.com","predictit.org",
            "wikipedia.org","x.com","twitter.com","reddit.com","polymarketanalytics.com",
-           "electionbettingodds.com","oddschecker.com"]
+           "electionbettingodds.com","oddschecker.com",
+           # odds aggregators observed in M3 smoke results (2026-10-06), all undated/post-cutoff:
+           "kalshiscan.com","macroodds.com","likelycast.com","copilot.markets","polymarkettrader.com",
+           "oddsreference.com","predictionmarketspicks.com"]

@@ -1,0 +1,97 @@
+{
+ "request": {
+  "contents": {
+   "highlights": {
+    "maxCharacters": 1500
+   },
+   "maxAgeHours": -1
+  },
+  "endPublishedDate": "2026-03-01T00:00:00.000Z",
+  "excludeDomains": [
+   "copilot.markets",
+   "electionbettingodds.com",
+   "kalshi.com",
+   "kalshiscan.com",
+   "likelycast.com",
+   "macroodds.com",
+   "manifold.markets",
+   "metaculus.com",
+   "oddschecker.com",
+   "oddsreference.com",
+   "polymarket.com",
+   "polymarketanalytics.com",
+   "polymarkettrader.com",
+   "predictionmarketspicks.com",
+   "predictit.org",
+   "reddit.com",
+   "twitter.com",
+   "wikipedia.org",
+   "x.com"
+  ],
+  "numResults": 5,
+  "query": "Federal Reserve interest rate decision outlook",
+  "type": "instant"
+ },
+ "response": {
+  "costDollars": {
+   "search": {
+    "neural": 0.004
+   },
+   "total": 0.004
+  },
+  "requestId": "485172251ec9c5227503f0473f4e0ca9",
+  "resolvedSearchType": "",
+  "results": [
+   {
+    "author": "Joshua Gibson",
+    "highlights": [
+     "A week before the September jobs report, futures priced in about a 70% chance of a Federal Reserve (Fed) rate hike in October. After that, CME FedWatch, which turns futures prices into the odds of a Fed move, puts October at 21.59% and still prices in a December hike. The chance it gives a December hold is 0.00%.\n...\nFedWatch prices three more hikes by June 2027, which would take the Fed's rate to 4.50%-4.75%, and shows no chance of anything lower at the end of 2027. The highest of the 18 official projections for the end of 2027 is 4.375%, the middle of 4.25%-4.50%. President Logan said on Thursday that rates need to rise another half a percentage point or more.\n...\nFedWatch prices a second hike at 43.59% for January 27 and fully by March 17. With unemployment at 4.3% or lower, a payroll miss pushes that hike toward March and a payroll beat pulls it toward January. Unemployment at 4.4% or higher on either report is the condition that can move December, because it would break the range and the Fed's own projections at once.\n\nBefore either jobs report, the minutes of the September meeting arrive on October 7 and the September Consumer Price Index (CPI) on October 14. The lean is that the December hike holds, and that any drop in its odds on a payroll miss reverses while unemployment stays in range. The call is wrong if December's odds fall below 50% after a payroll miss with unemployment at 4.3% or lower. That would mean the jobs count itself had become a reason to stop."
+    ],
+    "id": "https://www.fxstreet.com/analysis/the-october-fed-hike-just-died-heres-what-the-29k-jobs-report-really-means-for-rates-202610021806",
+    "image": "https://editorial.fxsstatic.com/images/i/discover-235_Medium.png",
+    "text": null,
+    "title": "The October Fed hike just died. Here's what the 29K jobs report really means for rates",
+    "url": "https://www.fxstreet.com/analysis/the-october-fed-hike-just-died-heres-what-the-29k-jobs-report-really-means-for-rates-202610021806"
+   },
+   {
+    "author": "Raffi Boyadjian",
+    "highlights": [
+     "bets.\n...\n.\n-\n...\nHowever, whilst AI stocks have so far shrugged off the rise in borrowing costs, it’s hard to predict what the exact pain threshold is for the 10-year Treasury yield, to which they’re most sensitive. The much softer-than-expected PCE inflation readings for August brought about some relief, removing the urgency for the Fed to hike again as soon as this month.\n\n## Fed minutes may offer some direction\n\nMost Fed officials see at least a further 25-bps hike by December according to the September dot plot, but the picture for 2027 is muddied. Although eight FOMC members predicted an additional hike next year, the rest either want to keep rates unchanged after the projected December increase or to cut them. The minutes of the September meeting due Wednesday might shed some light on whether the other 10 committee members could be convinced to join the hawkish camp if the inflation outlook doesn’t improve soon.\n\nIf the minutes strike a more hawkish tone than the post-meeting Fedspeak, the dollar is likely to extend its month-long winning streak, while stocks could face some selling pressure if yields surge again.\n...\nISM services PMI ... year inflation expectations would heighten inflation concerns.\n...\npublish the minutes of ... September meeting next ... quite hawkish. ... expectations for action ... 5%. The ECB"
+    ],
+    "id": "https://www.fxstreet.com/analysis/week-ahead-fed-minutes-in-the-spotlight-amid-bond-market-rout-202610020952",
+    "image": "https://editorial.fxsstatic.com/images/i/TrumpWarsh2-6526_Medium.png",
+    "text": null,
+    "title": "Week ahead – Fed minutes in the spotlight amid bond market rout",
+    "url": "https://www.fxstreet.com/analysis/week-ahead-fed-minutes-in-the-spotlight-amid-bond-market-rout-202610020952"
+   },
+   {
+    "highlights": [
+     "Polymarket prices a 25-basis-point December hike at 75%. CME FedWatch places cumulative 25 bps at 67.8%, with an additional 18.8% probability of a cumulative 50-basis-point move — a meaningful tail. Three data points will drive December’s contract from here. The FOMC September minutes land Wednesday at 2 PM ET. Written before the jobs miss, they will reveal how broadly hawkish the committee’s baseline was in September and whether internal debate was already building. If the minutes show clean unanimity for continued tightening, December at 75% is defensible.\n...\nadd context. With Kalshi pricing Democrats at 92% to win the House and 65% to win the Senate — and a full sweep favored at roughly 62–64% — the election will be decided before the Fed reconvenes in November. Whatever the political outcome, December is the first FOMC meeting since September 16 that carries no electoral proximity constraint. That is precisely why Polymarket has concentrated its rate-hike probability there, and why 75% is the number worth watching this week.\n\nThe October trade was always the wrong trade. Thirty-five years of institutional pattern, a 29,000-job payroll miss, and a vice chair’s public signal all pointed to the same conclusion. December at 75% on Polymarket is the live bet. Wednesday’s FOMC minutes are the first inflection point — they will tell traders whether the committee’s September hawkishness is durable enough to hold that contract through the data still ahead."
+    ],
+    "id": "https://ratespike.com/articles/fed-october-hold-midterm-history-december-trade",
+    "text": null,
+    "title": "Fed Has Never Hiked in October Before Midterms in 35 Years",
+    "url": "https://ratespike.com/articles/fed-october-hold-midterm-history-december-trade"
+   },
+   {
+    "highlights": [
+     "we’ve now seen, including the consumer spending data, all of this needs to go into my real-time assessment of where we go from here,” Kashkari said. In a Reuters interview published October 1, he added that if the economy “proves to just be incredibly resilient and inflation therefore is probably stickier than I appreciate, then policy could need to go higher yet than I’m\n...\nPolymarket currently prices a 74% chance of a 25 basis point hike at the December 8–9 FOMC meeting. Kalshi sits at 71%. The equal-weighted average across both platforms puts December at roughly 72% — a level that has held through both the soft PCE print and Friday’s jobs miss without meaningfully breaking lower.\n...\nDiane Swonk, chief economist at KPMG, put the consensus squarely: “The Fed is expected to skip a rate hike in October and resume hikes in December.” Joseph Brusuelas at RSM was more specific, projecting “one twenty-five basis point hike in December and then another in March of 2027” as his baseline. That’s the playbook the 72% December odds are pricing.\n...\nThe setup for prediction market traders is unusual in its clarity. October is priced. The 72% December trade is where the real action sits — and the variables that move it are knowable in the next two weeks. Kashkari has told traders exactly what he’s watching. The October 7 FOMC minutes and the October 14 CPI are the inputs that answer him. The December trade at 72% is priced for the answer to come back hot."
+    ],
+    "id": "http://www.ratespike.com/articles/kashkari-inflation-december-hike-trade",
+    "text": null,
+    "title": "Kashkari: ‘Still Too High’ — Inside the December Hike Trade",
+    "url": "http://www.ratespike.com/articles/kashkari-inflation-december-hike-trade"
+   },
+   {
+    "highlights": [
+     "driver — would put upward pressure on December’s contract. A document that reads like a committee already leaning toward patience would give December bears fresh ammunition. Goldman Sachs economists concluded, based on the Jefferson and Williams speeches, that October is off the table. The minutes will tell traders whether the committee reached that conclusion on September 16 or only after the data forced the issue.\n...\nThe minutes are the appetizer. The main course arrives in sequence: September CPI on October 14, the FOMC decision October 27–28, September PCE on October 29, and the October jobs report on November 6 — all before December 8–9. Fed funds futures currently imply 3.3 hikes over the next twelve months, more aggressive than the median FOMC dot of one additional move. The gap between futures and the dot plot is the central tension in every rate-ladder trade right now.\n\nFor prediction market traders, the position is straightforward: watch the minutes Wednesday at 2 PM ET for how the committee framed neutral rate, energy risk, and the conditions for a pause. A hawkish record gives the hawks a benchmark to return to if October 14 delivers another inflation surprise. A neutral or dovish record makes the current patience look more settled — and December’s 71% a ceiling rather than a floor. The minutes won’t decide December. The CPI will. But the minutes will tell you which way the committee was already leaning before the data made the choice easier."
+    ],
+    "id": "https://ratespike.com/articles/fed-minutes-october-7-december-hike-what-to-watch",
+    "text": null,
+    "title": "Fed Minutes Oct. 7: What to Watch for the December Hike",
+    "url": "https://ratespike.com/articles/fed-minutes-october-7-december-hike-what-to-watch"
+   }
+  ],
+  "searchTime": 603.2
+ }
+}

@@ -1,0 +1,101 @@
+{
+ "request": {
+  "contents": {
+   "highlights": {
+    "maxCharacters": 1500
+   },
+   "maxAgeHours": -1
+  },
+  "endPublishedDate": "2026-03-01T00:00:00.000Z",
+  "excludeDomains": [
+   "electionbettingodds.com",
+   "kalshi.com",
+   "manifold.markets",
+   "metaculus.com",
+   "oddschecker.com",
+   "polymarket.com",
+   "polymarketanalytics.com",
+   "predictit.org",
+   "reddit.com",
+   "twitter.com",
+   "wikipedia.org",
+   "x.com"
+  ],
+  "numResults": 5,
+  "query": "US government shutdown negotiations Congress",
+  "type": "fast"
+ },
+ "response": {
+  "costDollars": {
+   "search": {
+    "neural": 0.007
+   },
+   "total": 0.007
+  },
+  "requestId": "5266aa4aed677a664e4135e2a4c8ec0f",
+  "resolvedSearchType": "",
+  "results": [
+   {
+    "author": "Luke Cooper",
+    "highlights": [
+     "The United States Senate has passed amended funding legislation that moves the country's government one step closer to ending its longest-ever shutdown.\n\nIn an hours-long vote held at Capitol Hill in Washington DC on Sunday, local time, eight Democratic senators voted with Republicans to end debate on a proposed funding bill that would finance government work until January 30, 2026.\n\nSenators on Monday then took part in a series of additional votes on the bill itself, culminating in a final decision to formally approve it with a majority margin of 60-40 and send it to the House of Representatives.\n...\nWhile the Senate voted in favour of ending debate on the government's funding bill with a 60-40 margin on Sunday, another Senate vote was needed to formally approve it and send it back to the House of Representatives.\n\nThat vote took place and was passed on Monday. The funding legislation now needs to clear the House via another vote of approval and also be signed by US President Donald Trump, before the government can reopen.\n...\nThe next step for the amended bill will be in the House. Speaker Mike Johnson has already urged politicians to start returning to Washington DC \"right now\", given travel delays sparked by the shutdown.\n\nHe had also earlier flagged that he would give House members a period of 36 hours to return to Congress to take part in the next vote, meaning the next step in the funding bill's approval process may not happen until at least Wednesday,"
+    ],
+    "id": "https://www.abc.net.au/news/2025-11-11/us-government-shutdown-what-happens-next-explained/105994802",
+    "image": "https://live-production.wcms.abc-cdn.net.au/ffb49177775356cf73a9d50f3147f502?impolicy=wcms_watermark_news&cropH=2813&cropW=5000&xPos=0&yPos=96&width=862&height=485&imformat=generic",
+    "publishedDate": "2025-11-11T00:00:00.000Z",
+    "text": null,
+    "title": "The US government shutdown is one step closer to ending. Here is what happens next - ABC News",
+    "url": "https://www.abc.net.au/news/2025-11-11/us-government-shutdown-what-happens-next-explained/105994802"
+   },
+   {
+    "author": "Jake Sherman, Andrew Desiderio, Laura Weiss, Briana Reilly",
+    "highlights": [
+     "Speaker Mike Johnson said today that he would seek “dramatic” changes to the enhanced Obamacare premium subsidies in any future negotiations, throwing cold water on the idea that Congress could reach a quick resolution over the policy issue at the center of the shutdown.\n...\n> “There are lots of conversations and deliberations and discussions right now, even bipartisan, amongst members about necessary changes that would have to be made — pretty dramatic changes — to even have that considered on the floor.”\n\nJohnson’s comments track with what many Hill Republicans and the White House have been saying for months. Republicans want to drastically overhaul the tax credits, while Democrats want a straightforward extension.\n\nMeanwhile, House Minority Leader Hakeem Jeffries dug in even deeper. Jeffries said a one-year extension of the tax credits would be a non-starter for Democrats. Some Republicans in both chambers have pushed that option. Several of Jeffries’ Frontliners are also backing that path.\n...\ntwo-year extension ... midterms makes more ... , even if it is more expensive.\n...\nJeffries then clarified that Democrats have an “open mind,” but it depends “on the merits of what is prevented in good faith.” Jeffries added that the suggestion that the subsidies are for the wealthy is “ludicrous.”\n\nSo while moderates talk, House leaders sound as entrenched as ever on the Obamacare divide."
+    ],
+    "id": "https://punchbowl.news/article/house/johnson-jeffries-obamacare-credits/",
+    "image": "https://punchbowl.news/wp-content/uploads/10725-Midday-3-20251007-124505pm.jpg",
+    "publishedDate": "2025-10-07T00:00:00.000Z",
+    "text": null,
+    "title": "Johnson, Jeffries move further apart on Obamacare credits - Punchbowl News",
+    "url": "https://punchbowl.news/article/house/johnson-jeffries-obamacare-credits/"
+   },
+   {
+    "author": "Al Weaver",
+    "highlights": [
+     "The Senate voted Monday on the GOP’s “clean” stopgap funding bill and on a Democratic alternative, with both again failing to advance. Absent a substantial change in posture on either side, the upper chamber is expected to vote on the same continuing resolutions (CRs) on Tuesday and Thursday.\n\nAdding to the monotony and deepening the stalemate, the repeated votes are taking place even as no high-level negotiations are taking place and talks among rank-and-file lawmakers appear to have petered out.\n...\nSenate Majority Leader John Thune (R-S.D.) has been adamant he has little reason to meet with Senate Minority Leader Chuck Schumer (D-N.Y.), insisting he has nothing to negotiate in a “clean” bill and repeatedly noting Democrats have voted for such CRs more than a dozen times in recent years.\n...\nCreating another headache in the fight is that the ballgame is almost entirely in the Senate’s hands as the House remains out of town this week.\n\nSpeaker Mike Johnson (R-La.) canceled votes this week and indicated Monday that House members will remain in their respective districts until senators strike a deal.\n\n“I’m anxious to get my folks back,” Johnson told reporters Monday. “I want to bring the House back into session and get back to work, but we can’t do it until they turn the lights back on. We need Chuck Schumer to reopen the government, and as soon as he does that, we’ll bring everybody back.”\n\nThe inability to end the ... may also result in"
+    ],
+    "id": "https://thehill.com/homenews/senate/5541983-senate-frustration-shutdown-stalemate/",
+    "image": "https://thehill.com/wp-content/uploads/sites/2/2025/10/thunejohn_schumerchuck_100625gn01_w.jpg?w=1280",
+    "publishedDate": "2025-10-07T00:00:00.000Z",
+    "text": null,
+    "title": "Frustrations rise in Senate over shutdown stalemate",
+    "url": "https://thehill.com/homenews/senate/5541983-senate-frustration-shutdown-stalemate/"
+   },
+   {
+    "author": "The Associated Press",
+    "highlights": [
+     "includes bipartisan bills worked out by the Senate Appropriations Committee to fund parts of government — food aid, veterans programs and the legislative branch, among other things. All other funding would be extended until the end of January, giving lawmakers more than two months to finish additional spending bills.\n...\nWhile Democrats called for negotiations on the matter, Republicans said a funding bill would need to be passed first.\n...\nThis time around, Schumer demanded that Republicans negotiate with Democrats to get their votes on a spending bill. The Senate rules, he noted, requires bipartisan support to meet the 60-vote threshold necessary to advance a spending bill.\n\nBut those negotiations did not occur, at least not with Schumer. Republicans instead worked with a small group of eight Democrats to tee up a short-term bill to fund the government generally at current levels and accused Schumer of catering to the party’s left flank when he refused to go along.\n...\nBoth parties looked to the Nov. 4 elections in Virginia, New Jersey and elsewhere for signs of how the shutdown was influencing public opinion. Democrats took comfort in their overwhelming successes. Trump called it a “big factor, negative” for Republicans. But it did not change the GOP’s stance on negotiating. Instead, Trump ramped up calls for Republicans to end the filibuster in the Senate, which would pretty much eliminate the need for the majority party to ever negotiate with the minority."
+    ],
+    "id": "https://infonews.ca/news/7422981/a-historic-shutdown-is-over-it-leaves-no-winners-and-much-frustration/",
+    "image": "https://infonews.ca/wp-content/uploads/8ca81bd514acd758a60dbceaec9ec74ab6351fd89ffdbc3685e04340d1ed5f20.jpg",
+    "publishedDate": "2025-11-12T00:00:00.000Z",
+    "text": null,
+    "title": "A historic shutdown is over. It leaves no winners and much frustration | iNFOnews.ca",
+    "url": "https://infonews.ca/news/7422981/a-historic-shutdown-is-over-it-leaves-no-winners-and-much-frustration/"
+   },
+   {
+    "favicon": "https://www.politico.com/favicon.ico?v=2",
+    "highlights": [
+     "White House spokesperson Abigail Jackson said in a statement that Trump and congressional Republicans “are all in complete lockstep and have been consistent” in saying the government must reopen before health care or any policy issues can be discussed.\n...\nAs far as congressional Republicans are concerned, the politics of government shutdowns is straightforward: Isolate the Senate Democrats who are blocking a House-passed bill to reopen the government and make them own the consequences of having agencies shuttered.\n...\nat the end of the year. They are pushing Republicans to engage now while Johnson and Thune insist the problem can be dealt with later,\n...\nSome progress has been made behind the scenes toward at least establishing lines of bipartisan communication. Some rank-and-file senators are already discussing potential shutdown off-ramps involving the ACA subsidies and unfinished fiscal 2026 appropriations bills.\n\nThe person close to the White House said the administration has"
+    ],
+    "id": "https://www.politico.com/news/2025/10/07/shutdown-republicans-disarray-00597018",
+    "image": "https://www.politico.com/dims4/default/resize/1200/quality/90/format/jpg?url=https%3A%2F%2Fstatic.politico.com%2Fc0%2F0a%2F342bb70e4a1cba6a140af041f516%2Fu-s-congress-69131.jpg",
+    "publishedDate": "2025-10-07T00:00:00.000Z",
+    "text": null,
+    "title": "Republicans are in disarray one week into the shutdown - POLITICO",
+    "url": "https://www.politico.com/news/2025/10/07/shutdown-republicans-disarray-00597018"
+   }
+  ],
+  "searchTime": 544.2
+ }
+}

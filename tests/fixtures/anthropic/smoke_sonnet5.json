@@ -1,0 +1,18 @@
+{
+ "content": [
+  {
+   "text": "It's impossible to know in advance, but based on probability theory, a fair six-sided die has an equal 1-in-6 chance of landing on any specific number, including 6.\n\nFINAL PROBABILITY: 0.17",
+   "type": "text"
+  }
+ ],
+ "id": "msg_011Cfn2FxoNgq3fmdTtE53sU",
+ "latency_s": 1.33,
+ "model": "claude-sonnet-5",
+ "stop_reason": "end_turn",
+ "usage": {
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "input_tokens": 71,
+  "output_tokens": 72
+ }
+}

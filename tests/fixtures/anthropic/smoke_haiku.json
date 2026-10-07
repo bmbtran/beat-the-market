@@ -1,0 +1,18 @@
+{
+ "content": [
+  {
+   "text": "```json\n[\"hello\", \"ok\"]\n```",
+   "type": "text"
+  }
+ ],
+ "id": "msg_011Cfn2FvNmdUPBFZFLBFMbh",
+ "latency_s": 24.47,
+ "model": "claude-haiku-4-5-20251001",
+ "stop_reason": "end_turn",
+ "usage": {
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "input_tokens": 22,
+  "output_tokens": 14
+ }
+}
