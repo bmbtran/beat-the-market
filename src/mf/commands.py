@@ -193,3 +193,89 @@ def pilot_cmd(n: int, allow_spend: bool, max_usd: float | None, log=print) -> in
         return 4
     log("PILOT: projection within caps")
     return 0
+
+
+# ---------------------------------------------------------------------------------------------
+# live
+# ---------------------------------------------------------------------------------------------
+def _fake_responder(params) -> str:
+    import hashlib
+    import json as _j
+    import re as _re
+
+    u = params["messages"][0]["content"]
+    h = int(hashlib.sha256(u.encode()).hexdigest()[:6], 16)
+    if "search queries" in u:
+        return '["latest developments", "historical precedent"]'
+    if "Excerpts:" in u:
+        idxs = [int(x) for x in _re.findall(r"^\[(\d+)\]", u, flags=_re.M)]
+        return _j.dumps([{"idx": i, "relevance": 5, "mentions_events_after_t0": False, "reveals_outcome": False,
+                          "summary": "Synthetic summary (dry run)."} for i in idxs])
+    if "disagreements that explain" in u:
+        return '{"disagreements": ["timing"], "queries": ["timing of decision"]}'
+    if '"confidence"' in u:
+        return '{"probability": 0.35, "confidence": "medium", "reason": "dry run"}'
+    return f"Dry-run rationale.\nFINAL PROBABILITY: {0.2 + (h % 50) / 100:.2f}"
+
+
+def live_cmd(n: int, dry_run: bool, allow_spend: bool, max_usd: float | None, log=print) -> int:
+    import json as _j
+    import tempfile
+    from datetime import timedelta
+    from pathlib import Path
+
+    import httpx
+
+    from mf.config import settings
+    from mf.core import timeutil
+    from mf.core.budget import BudgetGuard
+    from mf.core.cache import Cache
+    from mf.data import polymarket as P
+    from mf.live import ledger as L
+    from mf.live.run import forecast_one, run_live
+    from mf.live.select import poly_live_price
+    from mf.llm.client import CachedLLM, FakeLLM
+    from mf.retrieval.exa_client import ExaClient
+    from mf.runtime import Ctx, make_ctx
+
+    s = settings()
+    if dry_run:
+        tmp = Path(tempfile.mkdtemp(prefix="mf-live-dry-"))
+        cache = Cache(tmp / "cache", mode="readwrite")
+        budget = BudgetGuard(tmp / "ledger_spend.jsonl", s.budget, run_id="live-dryrun", max_usd=1.0)
+        exa_fx = _j.loads((s.root / "tests/fixtures/exa/search_synthetic.json").read_text(encoding="utf-8"))
+        exa_fx["results"][0]["publishedDate"] = timeutil.iso(timeutil.now()).replace("Z", ".000Z")
+        exa = ExaClient(cache, budget, http=httpx.Client(transport=httpx.MockTransport(
+            lambda r: httpx.Response(200, json=exa_fx))))
+        ctx = Ctx(s, cache, budget, CachedLLM(FakeLLM(_fake_responder), cache, budget), exa, "live-dryrun", False)
+        ev = _j.loads((s.root / "tests/fixtures/polymarket/event_negrisk.json").read_text(encoding="utf-8"))
+        now = timeutil.now()
+        qs = []
+        for m in ev["markets"][:n]:
+            pr = poly_live_price(m) or (0.5, "last_trade")
+            qs.append(Question(qid=f"poly:{m['id']}", venue="polymarket", event_id=f"poly:{ev['id']}",
+                               title=m["question"], description=P.sanitize_description(m.get("description") or ""),
+                               category=P.classify(ev) or "World", created_at=now, t0=now,
+                               scheduled_close=now + timedelta(days=30),
+                               resolved_at=now + timedelta(days=30), horizon_days=30.0,
+                               p_mkt_t0=min(max(pr[0], 0.03), 0.97), p_mkt_source=pr[1], volume=1.0, outcome=-1,
+                               split="live", source_url="fixture"))
+        ledger = tmp / "forecasts.jsonl"
+        for q in qs:
+            rec = L.append(ledger, forecast_one(q, ctx, w=0.4, log=log))
+            log(f"[live dry-run] seq={rec.seq} {rec.qid} p_mkt={rec.p_mkt_at_forecast} halawi={rec.p_halawi} "
+                f"aia={rec.p_aia} aia+mkt={rec.p_aia_market_ens} hash={rec.hash[:8]}")
+        v = L.verify(ledger)
+        log(f"[live dry-run] temp ledger {'OK' if v.ok else 'BROKEN'} n={v.n} head={v.head}; "
+            f"network calls: llm={ctx.llm.network_calls} (fake) exa={ctx.exa.network_calls} (mocked); real ledger untouched")
+        return 0 if v.ok else 1
+    if not allow_spend:
+        log("live mode makes paid calls; pass --allow-spend (or --dry-run)")
+        return 2
+    ctx = make_ctx(prefix="live", max_usd=max_usd, allow_spend=True)
+    recs = run_live(n, ctx, s.data_dir / "live" / "forecasts.jsonl", log)
+    v = L.verify(s.data_dir / "live" / "forecasts.jsonl")
+    log(f"LEDGER {'OK' if v.ok else 'BROKEN'} n={v.n} head={v.head}")
+    log(f"spent this run: ${ctx.budget.run_spent():.4f}")
+    log(f"commit with: git add data/live && git commit -m \"live: {timeutil.now():%Y-%m-%d} n={len(recs)} head={v.head[:8]}\"")
+    return 0 if v.ok else 1

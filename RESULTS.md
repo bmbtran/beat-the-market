@@ -144,3 +144,21 @@ spent this run: $0.0000  (anthropic total $0.0010, exa 2026-10 $0.0300)
 SMOKE OK
 [exit 0]
 ```
+
+### M6 — Evaluation module (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_metrics.py tests/test_bootstrap.py -q
+.............                                                                                [100%]
+13 passed in 1.94s
+[exit 0]
+```
+
+### M7 — AIA components (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_calibrate.py tests/test_supervisor.py tests/test_market_ensemble.py -q
+.............                                                                                [100%]
+13 passed in 31.06s
+[exit 0]
+```
