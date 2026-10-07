@@ -25,7 +25,8 @@ supervisor_disagreement_prompt = "disagreement_v1"
 supervisor_update_prompt = "update_v1"
 queries_per_question = 2
 exa_type = "instant"          # fallback "fast" if M3 date-filter check fails
-exa_num_results = 5
+exa_num_results = 10           # pilot: 5 -> 10 (news results are often undated; more results, same price)
+exa_category = "news"          # pilot: dated-result survival 26% -> 45% (see RESULTS.md deviations)
 exa_highlight_max_chars = 1500
 exa_end_offset_hours = 24      # endPublishedDate = t0 - 24h
 exa_max_age_hours = -1         # prefer cached index copy (no live re-crawl of updated pages)

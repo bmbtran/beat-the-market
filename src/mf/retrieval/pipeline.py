@@ -62,7 +62,7 @@ def search_all(exa: ExaClient, queries: list[str], cutoff: datetime, s) -> list[
     for qtext in queries:
         resp, _ = exa.search(qtext, cutoff, num_results=s.pipeline.exa_num_results, search_type=s.pipeline.exa_type,
                              exclude_domains=s.exa_blocklist, highlight_chars=s.pipeline.exa_highlight_max_chars,
-                             max_age_hours=s.pipeline.exa_max_age_hours)
+                             max_age_hours=s.pipeline.exa_max_age_hours, category=s.pipeline.exa_category)
         for r in resp.get("results") or []:
             u = _norm_url(r.get("url") or "")
             if u and u not in seen:
@@ -168,7 +168,7 @@ def project_question(q: Question, llm, exa: ExaClient, s) -> dict:
     for qtext in queries or [None] * s.pipeline.queries_per_question:
         body = None if qtext is None else exa.build_body(
             qtext, cutoff, s.pipeline.exa_num_results, s.pipeline.exa_type, s.exa_blocklist,
-            s.pipeline.exa_highlight_max_chars, s.pipeline.exa_max_age_hours)
+            s.pipeline.exa_highlight_max_chars, s.pipeline.exa_max_age_hours, s.pipeline.exa_category)
         if body is not None and exa.cache.exists("exa", make_key("exa", "search", params=body)):
             out["exa_hits"] += 1
         else:

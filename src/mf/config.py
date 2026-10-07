@@ -53,6 +53,7 @@ class PipelineCfg(BaseModel):
     queries_per_question: int
     exa_type: str
     exa_num_results: int
+    exa_category: str | None = None
     exa_highlight_max_chars: int
     exa_end_offset_hours: int
     exa_max_age_hours: int

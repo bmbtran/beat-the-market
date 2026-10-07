@@ -1,6 +1,6 @@
 # Pre-registration — market-forecaster backtest
 
-Committed **before** the first forecast on the test split (verify with
+Committed **before** the first forecast on the test split (dev pilot measured on 2026-10-07; spend so far $1.60) (verify with
 `git log --follow --format="%h %ad %s" -- PREREGISTRATION.md data/runs/backtest_v1/forecasts.jsonl`).
 The dev split (50 earliest-t0 questions) may be used freely for prompt iteration; **the test split
 (200 questions) is run once**. Any re-run on test is logged in RESULTS.md with the reason.
@@ -9,6 +9,9 @@ The dev split (50 earliest-t0 questions) may be used freely for prompt iteration
 - `configs/default.toml` and `configs/pricing.toml` as committed with this file.
 - All prompts under `prompts/` (hashes in `prompts/lockfile.json`, enforced by `tests/test_prompts.py`).
 - Dataset: `data/dataset/questions.jsonl` (dev/test split) and `data/dataset/canary_precutoff.jsonl`.
+- Retrieval: Exa `instant`, `category: "news"`, 10 results per query, 2 queries per question,
+  `endPublishedDate = t0 − 24h`, undated results dropped, blocklist as in config, helper relevance ≥ 4, top 6 kept.
+  (Changed from the plan's 5 non-news results after the dev pilot; see RESULTS.md deviations.)
 - Reasoner `claude-sonnet-5` (thinking disabled, effort medium, max_tokens 1200), helper
   `claude-haiku-4-5-20251001`, K = 5 prompt variants, trimmed mean (drop 1 min + 1 max),
   ≥ 3 valid samples required, supervisor trigger spread > 0.10, Platt coefficient √3 (fixed).

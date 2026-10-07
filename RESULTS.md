@@ -73,6 +73,13 @@ _Pending: from `reports/spend.json`._
   consistent rule removes them across venues, so they stay in and are noted as a limitation.
 - **Dataset determinism:** a second `mf build-dataset` (from the HTTP cache) produced byte-identical
   `questions.jsonl` / `canary_precutoff.jsonl` (sha256 d17c4437… / 966498ec…).
+- **Retrieval config changed after the first pilot (dev-set tuning, before pre-registration):** the first pilot
+  (plan settings: `instant`, 5 results) kept **0 evidence items for 5 of 10 dev questions** (mean 1.2) because 70 of
+  88 dropped results had no `publishedDate`. A dev-only experiment on the pilot's 20 real queries measured the share of
+  results surviving the deterministic filters: `instant` 26%, `fast` 25%, `instant`+`category:"news"` 43%, and
+  `instant`+news with 10 results 45% (86 survivors vs 24). Adopted: `exa_category = "news"`, `exa_num_results = 10`
+  (the plan's fallback lever list moves this the other way; it is reversible if the pilot projects over the caps).
+  Experiment cost $0.26 (logged in the spend ledger under run ids `bt-exa-experiment-*`).
 
 ## Milestone log
 
@@ -315,5 +322,74 @@ canary: {"n": 30, "by_venue": {"kalshi": 15, "polymarket": 15}, "by_category": {
 [exit 0]
 $ uv run python -m mf.data.dataset --validate
 OK 250 questions (dev=50 test=200) canary=30
+[exit 0]
+```
+
+### M5 — Reasoning + Halawi aggregation + Batch path + pilot (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_reason.py tests/test_aggregate.py tests/test_batch.py -q
+...........                                                                                  [100%]
+11 passed in 0.76s
+[exit 0]
+$ uv run mf pilot --n 10 --allow-spend
+[reason] 25/100 sync requests
+[reason] 50/100 sync requests
+[reason] 75/100 sync requests
+[reason] 100/100 sync requests
+{
+  "created_utc": "2026-10-07T03:28:42.333031Z",
+  "n_questions": 10,
+  "usd_by_op_per_question_sync": {
+    "query_gen": 0.000501,
+    "reason": 0.034363,
+    "reason_noret": 0.032131,
+    "relevance_summary": 0.009601,
+    "search_instant": 0.012,
+    "supervisor_disagree": 0.0042,
+    "supervisor_update": 0.001589
+  },
+  "usd_per_question_sync_total": 0.094386,
+  "anthropic_usd_per_question_batch": 0.049139,
+  "supervisor_trigger_rate": 0.5,
+  "kept_evidence_per_question": [
+    5,
+    3,
+    2,
+    5,
+    4,
+    1,
+    4,
+    0,
+    0,
+    0
+  ],
+  "exa_results_per_question": [
+    17,
+    17,
+    18,
+    19,
+    19,
+    20,
+    20,
+    20,
+    20,
+    20
+  ],
+  "projected_backtest_anthropic_usd": 11.9634,
+  "projected_backtest_exa_usd": 3.0,
+  "remaining_anthropic_backtest_usd": 21.8338,
+  "remaining_exa_2026-10_usd": 8.567,
+  "forecast_stats": {
+    "samples": 100,
+    "samples_failed": 0,
+    "supervisor_triggered": 5,
+    "supervisor_replaced": 0,
+    "supervisor_failed": 0,
+    "questions": 10
+  }
+}
+PROJECTED backtest: $11.96 anthropic, $3.00 exa (remaining: $21.83 anthropic backtest, $8.57 exa this month)
+PILOT: projection within caps
 [exit 0]
 ```

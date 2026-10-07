@@ -47,7 +47,8 @@ class ExaClient:
 
     @staticmethod
     def build_body(query: str, end_published: datetime | None, num_results: int, search_type: str,
-                   exclude_domains: list[str], highlight_chars: int, max_age_hours: int | None) -> dict:
+                   exclude_domains: list[str], highlight_chars: int, max_age_hours: int | None,
+                   category: str | None = None) -> dict:
         body: dict = {
             "query": query,
             "type": search_type,
@@ -59,6 +60,8 @@ class ExaClient:
             body["endPublishedDate"] = timeutil.iso(end_published).replace("Z", ".000Z")
         if max_age_hours is not None:
             body["contents"]["maxAgeHours"] = max_age_hours
+        if category:
+            body["category"] = category
         return body
 
     @retry(retry=retry_if_exception(_retryable), wait=wait_exponential_jitter(initial=1, max=30),
@@ -71,10 +74,11 @@ class ExaClient:
 
     def search(self, query: str, end_published: datetime | None, num_results: int = 5,
                search_type: str = "instant", exclude_domains: list[str] | None = None,
-               highlight_chars: int = 1500, max_age_hours: int | None = -1) -> tuple[dict, bool]:
+               highlight_chars: int = 1500, max_age_hours: int | None = -1,
+               category: str | None = None) -> tuple[dict, bool]:
         """Returns (response_json, cache_hit)."""
         body = self.build_body(query, end_published, num_results, search_type, exclude_domains or [],
-                               highlight_chars, max_age_hours)
+                               highlight_chars, max_age_hours, category)
         key = make_key("exa", "search", params=body)
         est = exa_search_estimate(search_type, num_results)
 

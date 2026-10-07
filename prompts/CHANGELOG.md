@@ -8,3 +8,6 @@ Released prompts are frozen: a change means a new `_vN+1.md` file, an entry here
 - `query_gen_v1`, `relevance_summary_v1`: retrieval helpers (ideas adapted from Halawi et al. 2024).
 - `r1_halawi_scratchpad_v1` … `r5_superforecaster_checklist_v1`: the K=5 reasoning variants.
 - `disagreement_v1`, `update_v1`: AIA supervisor.
+
+## 2026-10-07 — pre-registration
+- All prompts locked in `prompts/lockfile.json` before the first test-split forecast.
