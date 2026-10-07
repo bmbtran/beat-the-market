@@ -50,7 +50,7 @@ live:          open markets ──► same pipeline ──► append-only SHA-25
 - **Market blend.** `w · p_llm + (1 − w) · p_market`, with `w` chosen by 5-fold cross-fitting grouped by event
   (and separately by fitting on the dev split).
 
-## Leakage, taken seriously
+## Leakage
 
 | Layer | Control |
 |---|---|
@@ -166,7 +166,7 @@ uv run mf score-live         # score forecasts whose markets have resolved
 
 The cumulative live chart appears in `reports/index.html` once forecasts resolve.
 
-## Cost engineering
+## Cost 
 
 Every external call goes through a content-addressed cache (`sha256` of the canonical request, including the
 prompt file's hash), so re-runs cost $0 and editing one prompt invalidates only its calls. A budget guard reserves
