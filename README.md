@@ -4,7 +4,7 @@
 Halawi et al. 2024 (arXiv 2402.18563); AIA Forecaster technical report (arXiv 2511.07678); Neyman & Roughgarden 2022 (arXiv 2111.03153); Paleka et al., Pitfalls in Evaluating Language Model Forecasters (arXiv 2506.00723)
 
 
-## Current stage: 
+## Current state: 
 
 A leak-free backtest of an LLM forecasting agent on 200 binary prediction-market questions, scored against
 the **real market price at the same moment**, plus a forward, hash-chained live track record. The agent
