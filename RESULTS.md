@@ -78,3 +78,12 @@ $ git status --porcelain --ignored | grep "^!!"
 !! .venv/
 !! src/mf/__pycache__/
 ```
+
+### M1 — Core: hashing, cache, budget, pricing (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_cache.py tests/test_budget.py tests/test_pricing.py -q
+.....................                                                                        [100%]
+21 passed in 0.51s
+[exit 0]
+```

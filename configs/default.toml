@@ -1,0 +1,63 @@
+# All knobs for market-forecaster. Values from PLAN.md §9.
+
+[window]
+created_min = "2026-02-01T00:00:00Z"
+close_max   = "2026-09-30T23:59:59Z"
+resolved_max = "2026-10-05T23:59:59Z"
+canary_resolved_min = "2025-03-01T00:00:00Z"
+canary_resolved_max = "2025-06-30T23:59:59Z"
+
+[models]
+reasoner = "claude-sonnet-5"
+helper   = "claude-haiku-4-5-20251001"
+reasoner_effort = "medium"
+reasoner_thinking = "disabled"
+reasoner_max_tokens = 1200
+helper_max_tokens = 1500
+
+[pipeline]
+k_samples = 5
+reasoning_prompts = ["r1_halawi_scratchpad_v1","r2_base_rates_v1","r3_inside_outside_view_v1","r4_premortem_both_sides_v1","r5_superforecaster_checklist_v1"]
+query_prompt = "query_gen_v1"
+relevance_prompt = "relevance_summary_v1"
+supervisor_disagreement_prompt = "disagreement_v1"
+supervisor_update_prompt = "update_v1"
+queries_per_question = 2
+exa_type = "instant"          # fallback "fast" if M3 date-filter check fails
+exa_num_results = 5
+exa_highlight_max_chars = 1500
+exa_end_offset_hours = 24      # endPublishedDate = t0 - 24h
+exa_max_age_hours = -1         # prefer cached index copy (no live re-crawl of updated pages)
+min_relevance = 4
+max_evidence = 6
+supervisor_spread_threshold = 0.10
+supervisor_max_queries = 2
+platt_coef = 1.7320508          # sqrt(3), fixed
+trim = 1                       # drop 1 min + 1 max of 5
+min_valid_samples = 3
+use_batch_api = true
+
+[dataset]
+n_total = 250
+n_dev = 50
+n_canary = 30
+seed = 20261006
+kalshi_min_volume = 5000
+poly_min_volume = 50000
+max_per_event = 2
+p_mkt_min = 0.03
+p_mkt_max = 0.97
+min_lifetime_days = 7
+min_title_chars = 15
+max_category_share = 0.35
+
+[budget]
+anthropic_total_usd = 30.0
+anthropic_backtest_usd = 23.0
+exa_monthly_usd = 9.0
+per_run_default_usd = 5.0     # every CLI command also takes --max-usd
+
+[exa_blocklist]
+domains = ["polymarket.com","kalshi.com","manifold.markets","metaculus.com","predictit.org",
+           "wikipedia.org","x.com","twitter.com","reddit.com","polymarketanalytics.com",
+           "electionbettingodds.com","oddschecker.com"]

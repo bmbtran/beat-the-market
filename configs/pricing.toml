@@ -1,0 +1,28 @@
+# Verified 2026-10-06 (PLAN.md §10). Anthropic in $/MTok; Exa in $ per request / per page.
+[anthropic."claude-sonnet-5"]
+input = 2.00
+output = 10.00
+cache_read = 0.20
+cache_write_5m = 2.50
+batch_discount = 0.5
+
+[anthropic."claude-haiku-4-5-20251001"]
+input = 1.00
+output = 5.00
+cache_read = 0.10
+cache_write_5m = 1.25
+batch_discount = 0.5
+
+[anthropic."claude-sonnet-5-5"]
+input = 2.00
+output = 10.00
+cache_read = 0.20
+cache_write_5m = 2.50
+batch_discount = 0.5
+
+[exa]
+search_instant = 0.004
+search_fast = 0.007
+search_auto = 0.007
+extra_result = 0.001
+contents_per_page_per_type = 0.001
