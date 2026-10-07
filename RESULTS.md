@@ -6,7 +6,325 @@
 ## Verify
 
 <!-- VERIFY:START -->
-Not yet run (filled in verbatim after `uv run python scripts/verify.py` passes).
+**`VERIFY: PASS metrics_sha=84cc418825e1f3bd4569f8015b52883c3ee39edaf0c22190d50fe40ddadca61f`** (run 2026-10-07; full verbatim output below)
+
+<details><summary>uv run python scripts/verify.py</summary>
+
+```
+$ uv run python scripts/verify.py
+$ uv run pytest -q -p no:cacheprovider
+............................................................................................ [ 69%]
+.........................................                                                    [100%]
+133 passed in 9.94s
+[exit 0]
+
+$ uv run python -m mf.data.dataset --validate
+OK 250 questions (dev=50 test=200) canary=30
+[exit 0]
+
+$ uv run mf evaluate --out reports/metrics_repro.json
+wrote reports/metrics_repro.json: n_test_scored=200 events=126 failed={'noret_single': 0, 'noret_ens': 0, 'halawi_single': 0, 'halawi': 0, 'halawi_sup': 0}
+  const_0.5        Brier 0.2500  95% CI [0.2500, 0.2500]
+  base_rate        Brier 0.2410  95% CI [0.2287, 0.2533]
+  market           Brier 0.1676  95% CI [0.1382, 0.1978]
+  noret_ens        Brier 0.2802  95% CI [0.2378, 0.3221]
+  halawi           Brier 0.2794  95% CI [0.2364, 0.3227]
+  halawi_sup       Brier 0.2695  95% CI [0.2280, 0.3122]
+  aia              Brier 0.3029  95% CI [0.2515, 0.3554]
+  market_ens_aia   Brier 0.1688  95% CI [0.1392, 0.1991]
+  PRIMARY aia_minus_halawi: dBrier +0.0235 [+0.0058, +0.0394] P(d<0)=0.005
+  PRIMARY market_ens_aia_minus_market: dBrier +0.0012 [+0.0004, +0.0021] P(d<0)=0.003
+[exit 0]
+
+$ compare reports/metrics.json reports/metrics_repro.json (canonical JSON)
+REPRO OK (identical after canonical JSON)
+
+$ uv run mf verify-ledger
+LEDGER OK n=10 head=dd4761a1291bec68a002420291764aa19fc1678430412ae9e5dc7920c2f5dbdc
+[exit 0]
+
+$ uv run mf budget
+{
+  "anthropic_backtest_cap_usd": 23.0,
+  "anthropic_backtest_usd": 13.955241,
+  "anthropic_cap_usd": 30.0,
+  "anthropic_total_usd": 14.562981,
+  "by_provider_op_month": [
+    {
+      "calls": 260,
+      "month": "2026-10",
+      "op": "query_gen",
+      "provider": "anthropic",
+      "usd": 0.144909
+    },
+    {
+      "calls": 135,
+      "month": "2026-10",
+      "op": "reason",
+      "provider": "anthropic",
+      "usd": 0.9905
+    },
+    {
+      "calls": 1200,
+      "month": "2026-10",
+      "op": "reason_batch",
+      "provider": "anthropic",
+      "usd": 4.56766
+    },
+    {
+      "calls": 50,
+      "month": "2026-10",
+      "op": "reason_noret",
+      "provider": "anthropic",
+      "usd": 0.32131
+    },
+    {
+      "calls": 1150,
+      "month": "2026-10",
+      "op": "reason_noret_batch",
+      "provider": "anthropic",
+      "usd": 4.05287
+    },
+    {
+      "calls": 377,
+      "month": "2026-10",
+      "op": "relevance_summary",
+      "provider": "anthropic",
+      "usd": 2.737902
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_batch_batch",
+      "provider": "anthropic",
+      "usd": 4.6e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_helper",
+      "provider": "anthropic",
+      "usd": 9.2e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_reasoner",
+      "provider": "anthropic",
+      "usd": 0.000862
+    },
+    {
+      "calls": 131,
+      "month": "2026-10",
+      "op": "supervisor_disagree",
+      "provider": "anthropic",
+      "usd": 1.251616
+    },
+    {
+      "calls": 131,
+      "month": "2026-10",
+      "op": "supervisor_update",
+      "provider": "anthropic",
+      "usd": 0.495214
+    },
+    {
+      "calls": 19,
+      "month": "2026-10",
+      "op": "search_fast",
+      "provider": "exa",
+      "usd": 0.133
+    },
+    {
+      "calls": 788,
+      "month": "2026-10",
+      "op": "search_instant",
+      "provider": "exa",
+      "usd": 3.152
+    }
+  ],
+  "exa_by_month_usd": {
+    "2026-10": 3.285
+  },
+  "exa_monthly_cap_usd": 9.0,
+  "n_paid_calls": 4244
+}
+Anthropic: $14.5630 of $30.00 total (backtest $13.9552 of $23.00)
+Exa 2026-10: $3.2850 of $9.00
+BUDGET OK: all caps respected
+[exit 0]
+
+$ check RESULTS.md / README.md placeholders and METRICS blocks
+RESULTS.md: METRICS block matches metrics.json
+README.md: METRICS block matches metrics.json
+RESULTS.md: no TODO/TBD/XX/_Pending placeholders
+
+$ git status --porcelain --ignored
+ M RESULTS.md
+ M scripts/verify.py
+!! .env
+!! .venv/
+!! cache/
+!! reports/metrics_repro.json
+!! src/mf/__pycache__/
+!! src/mf/core/__pycache__/
+!! src/mf/data/__pycache__/
+!! src/mf/eval/__pycache__/
+!! src/mf/forecast/__pycache__/
+!! src/mf/live/__pycache__/
+!! src/mf/llm/__pycache__/
+!! src/mf/retrieval/__pycache__/
+!! state/
+!! tests/__pycache__/
+[exit 0]
+
+$ git ls-files
+.env.example
+.gitattributes
+.gitignore
+.python-version
+LEARNING.md
+PLAN.md
+PREREGISTRATION.md
+README.md
+RESOURCES.md
+RESULTS.md
+configs/default.toml
+configs/pricing.toml
+data/dataset/canary_precutoff.jsonl
+data/dataset/dataset_card.json
+data/dataset/questions.jsonl
+data/live/forecasts.jsonl
+data/runs/backtest_v1/evidence.jsonl
+data/runs/backtest_v1/forecasts.jsonl
+data/runs/backtest_v1/retrieval_meta.jsonl
+data/runs/backtest_v1/samples.jsonl
+prompts/CHANGELOG.md
+prompts/lockfile.json
+prompts/reasoning/r1_halawi_scratchpad_v1.md
+prompts/reasoning/r2_base_rates_v1.md
+prompts/reasoning/r3_inside_outside_view_v1.md
+prompts/reasoning/r4_premortem_both_sides_v1.md
+prompts/reasoning/r5_superforecaster_checklist_v1.md
+prompts/retrieval/query_gen_v1.md
+prompts/retrieval/relevance_summary_v1.md
+prompts/smoke/smoke_helper_v1.md
+prompts/smoke/smoke_reasoner_v1.md
+prompts/supervisor/disagreement_v1.md
+prompts/supervisor/update_v1.md
+pyproject.toml
+reports/figures/brier_bars.png
+reports/figures/brier_by_horizon.png
+reports/figures/delta_forest.png
+reports/figures/reliability.png
+reports/figures/scatter_vs_market.png
+reports/index.html
+reports/leakage_audit.csv
+reports/leakage_audit_summary.json
+reports/metrics.json
+reports/spend.json
+scripts/check_metrics_arms.py
+scripts/live_weekly.ps1
+scripts/log_milestone.py
+scripts/verify.py
+src/mf/__init__.py
+src/mf/cli.py
+src/mf/commands.py
+src/mf/config.py
+src/mf/core/__init__.py
+src/mf/core/budget.py
+src/mf/core/cache.py
+src/mf/core/hashing.py
+src/mf/core/http.py
+src/mf/core/pricing.py
+src/mf/core/timeutil.py
+src/mf/data/__init__.py
+src/mf/data/common.py
+src/mf/data/dataset.py
+src/mf/data/fixtures.py
+src/mf/data/kalshi.py
+src/mf/data/polymarket.py
+src/mf/data/prices.py
+src/mf/eval/__init__.py
+src/mf/eval/arms.py
+src/mf/eval/audit.py
+src/mf/eval/bootstrap.py
+src/mf/eval/calibration.py
+src/mf/eval/metrics.py
+src/mf/eval/report.py
+src/mf/forecast/__init__.py
+src/mf/forecast/aggregate.py
+src/mf/forecast/calibrate.py
+src/mf/forecast/market_ensemble.py
+src/mf/forecast/pipeline.py
+src/mf/forecast/reason.py
+src/mf/forecast/supervisor.py
+src/mf/live/__init__.py
+src/mf/live/ledger.py
+src/mf/live/run.py
+src/mf/live/score.py
+src/mf/live/select.py
+src/mf/llm/__init__.py
+src/mf/llm/batch.py
+src/mf/llm/client.py
+src/mf/llm/parse.py
+src/mf/llm/prompts.py
+src/mf/retrieval/__init__.py
+src/mf/retrieval/exa_client.py
+src/mf/retrieval/leakage.py
+src/mf/retrieval/pipeline.py
+src/mf/retrieval/queries.py
+src/mf/retrieval/summarize.py
+src/mf/runtime.py
+src/mf/schemas.py
+src/mf/smoke.py
+tests/conftest.py
+tests/fixtures/anthropic/smoke_haiku.json
+tests/fixtures/anthropic/smoke_sonnet5.json
+tests/fixtures/exa/search_synthetic.json
+tests/fixtures/exa/smoke_fast_0.json
+tests/fixtures/exa/smoke_fast_1.json
+tests/fixtures/exa/smoke_instant_0.json
+tests/fixtures/exa/smoke_instant_1.json
+tests/fixtures/kalshi/can_close_early_market.json
+tests/fixtures/kalshi/cutoff.json
+tests/fixtures/kalshi/events_fed_settled.json
+tests/fixtures/kalshi/historical_candles.json
+tests/fixtures/kalshi/historical_markets_fed_jul26.json
+tests/fixtures/kalshi/live_candles.json
+tests/fixtures/kalshi/live_candles_404_for_historical.json
+tests/fixtures/polymarket/event_negrisk.json
+tests/fixtures/polymarket/event_non_yes_no.json
+tests/fixtures/polymarket/prices_history.json
+tests/test_aggregate.py
+tests/test_batch.py
+tests/test_bootstrap.py
+tests/test_budget.py
+tests/test_cache.py
+tests/test_calibrate.py
+tests/test_dataset.py
+tests/test_exa_client.py
+tests/test_kalshi.py
+tests/test_leakage.py
+tests/test_live_ledger.py
+tests/test_llm_client.py
+tests/test_market_ensemble.py
+tests/test_metrics.py
+tests/test_parse.py
+tests/test_polymarket.py
+tests/test_prices.py
+tests/test_pricing.py
+tests/test_prompts.py
+tests/test_reason.py
+tests/test_report.py
+tests/test_retrieval.py
+tests/test_supervisor.py
+uv.lock
+[exit 0]
+git: .env, cache/, state/ are neither tracked nor staged
+
+VERIFY: PASS metrics_sha=84cc418825e1f3bd4569f8015b52883c3ee39edaf0c22190d50fe40ddadca61f
+```
+</details>
 <!-- VERIFY:END -->
 
 ## Summary
@@ -809,5 +1127,326 @@ LEDGER OK n=10 head=dd4761a1291bec68a002420291764aa19fc1678430412ae9e5dc7920c2f5
 [exit 0]
 $ git log --oneline -- data/live/forecasts.jsonl
 d740965 live: 2026-10-07 n=10 head=dd4761a1
+[exit 0]
+```
+
+### M11 — Report, README, RESULTS (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_report.py -q
+..                                                                                           [100%]
+2 passed in 5.87s
+[exit 0]
+$ uv run python scripts/verify.py
+
+$ uv run pytest -q -p no:cacheprovider
+............................................................................................ [ 69%]
+.........................................                                                    [100%]
+133 passed in 8.94s
+[exit 0]
+
+$ uv run python -m mf.data.dataset --validate
+OK 250 questions (dev=50 test=200) canary=30
+[exit 0]
+
+$ uv run mf evaluate --out reports/metrics_repro.json
+wrote reports/metrics_repro.json: n_test_scored=200 events=126 failed={'noret_single': 0, 'noret_ens': 0, 'halawi_single': 0, 'halawi': 0, 'halawi_sup': 0}
+  const_0.5        Brier 0.2500  95% CI [0.2500, 0.2500]
+  base_rate        Brier 0.2410  95% CI [0.2287, 0.2533]
+  market           Brier 0.1676  95% CI [0.1382, 0.1978]
+  noret_ens        Brier 0.2802  95% CI [0.2378, 0.3221]
+  halawi           Brier 0.2794  95% CI [0.2364, 0.3227]
+  halawi_sup       Brier 0.2695  95% CI [0.2280, 0.3122]
+  aia              Brier 0.3029  95% CI [0.2515, 0.3554]
+  market_ens_aia   Brier 0.1688  95% CI [0.1392, 0.1991]
+  PRIMARY aia_minus_halawi: dBrier +0.0235 [+0.0058, +0.0394] P(d<0)=0.005
+  PRIMARY market_ens_aia_minus_market: dBrier +0.0012 [+0.0004, +0.0021] P(d<0)=0.003
+[exit 0]
+
+$ compare reports/metrics.json reports/metrics_repro.json (canonical JSON)
+REPRO OK (identical after canonical JSON)
+
+$ uv run mf verify-ledger
+LEDGER OK n=10 head=dd4761a1291bec68a002420291764aa19fc1678430412ae9e5dc7920c2f5dbdc
+[exit 0]
+
+$ uv run mf budget
+{
+  "anthropic_backtest_cap_usd": 23.0,
+  "anthropic_backtest_usd": 13.955241,
+  "anthropic_cap_usd": 30.0,
+  "anthropic_total_usd": 14.562981,
+  "by_provider_op_month": [
+    {
+      "calls": 260,
+      "month": "2026-10",
+      "op": "query_gen",
+      "provider": "anthropic",
+      "usd": 0.144909
+    },
+    {
+      "calls": 135,
+      "month": "2026-10",
+      "op": "reason",
+      "provider": "anthropic",
+      "usd": 0.9905
+    },
+    {
+      "calls": 1200,
+      "month": "2026-10",
+      "op": "reason_batch",
+      "provider": "anthropic",
+      "usd": 4.56766
+    },
+    {
+      "calls": 50,
+      "month": "2026-10",
+      "op": "reason_noret",
+      "provider": "anthropic",
+      "usd": 0.32131
+    },
+    {
+      "calls": 1150,
+      "month": "2026-10",
+      "op": "reason_noret_batch",
+      "provider": "anthropic",
+      "usd": 4.05287
+    },
+    {
+      "calls": 377,
+      "month": "2026-10",
+      "op": "relevance_summary",
+      "provider": "anthropic",
+      "usd": 2.737902
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_batch_batch",
+      "provider": "anthropic",
+      "usd": 4.6e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_helper",
+      "provider": "anthropic",
+      "usd": 9.2e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_reasoner",
+      "provider": "anthropic",
+      "usd": 0.000862
+    },
+    {
+      "calls": 131,
+      "month": "2026-10",
+      "op": "supervisor_disagree",
+      "provider": "anthropic",
+      "usd": 1.251616
+    },
+    {
+      "calls": 131,
+      "month": "2026-10",
+      "op": "supervisor_update",
+      "provider": "anthropic",
+      "usd": 0.495214
+    },
+    {
+      "calls": 19,
+      "month": "2026-10",
+      "op": "search_fast",
+      "provider": "exa",
+      "usd": 0.133
+    },
+    {
+      "calls": 788,
+      "month": "2026-10",
+      "op": "search_instant",
+      "provider": "exa",
+      "usd": 3.152
+    }
+  ],
+  "exa_by_month_usd": {
+    "2026-10": 3.285
+  },
+  "exa_monthly_cap_usd": 9.0,
+  "n_paid_calls": 4244
+}
+Anthropic: $14.5630 of $30.00 total (backtest $13.9552 of $23.00)
+Exa 2026-10: $3.2850 of $9.00
+BUDGET OK: all caps respected
+[exit 0]
+
+$ check RESULTS.md / README.md placeholders and METRICS blocks
+RESULTS.md: METRICS block matches metrics.json
+README.md: METRICS block matches metrics.json
+RESULTS.md: no TODO/TBD/XX/_Pending placeholders
+
+$ git status --porcelain --ignored
+!! .env
+!! .venv/
+!! cache/
+!! reports/metrics_repro.json
+!! src/mf/__pycache__/
+!! src/mf/core/__pycache__/
+!! src/mf/data/__pycache__/
+!! src/mf/eval/__pycache__/
+!! src/mf/forecast/__pycache__/
+!! src/mf/live/__pycache__/
+!! src/mf/llm/__pycache__/
+!! src/mf/retrieval/__pycache__/
+!! state/
+!! tests/__pycache__/
+[exit 0]
+
+$ git ls-files
+.env.example
+.gitattributes
+.gitignore
+.python-version
+LEARNING.md
+PLAN.md
+PREREGISTRATION.md
+README.md
+RESOURCES.md
+RESULTS.md
+configs/default.toml
+configs/pricing.toml
+data/dataset/canary_precutoff.jsonl
+data/dataset/dataset_card.json
+data/dataset/questions.jsonl
+data/live/forecasts.jsonl
+data/runs/backtest_v1/evidence.jsonl
+data/runs/backtest_v1/forecasts.jsonl
+data/runs/backtest_v1/retrieval_meta.jsonl
+data/runs/backtest_v1/samples.jsonl
+prompts/CHANGELOG.md
+prompts/lockfile.json
+prompts/reasoning/r1_halawi_scratchpad_v1.md
+prompts/reasoning/r2_base_rates_v1.md
+prompts/reasoning/r3_inside_outside_view_v1.md
+prompts/reasoning/r4_premortem_both_sides_v1.md
+prompts/reasoning/r5_superforecaster_checklist_v1.md
+prompts/retrieval/query_gen_v1.md
+prompts/retrieval/relevance_summary_v1.md
+prompts/smoke/smoke_helper_v1.md
+prompts/smoke/smoke_reasoner_v1.md
+prompts/supervisor/disagreement_v1.md
+prompts/supervisor/update_v1.md
+pyproject.toml
+reports/figures/brier_bars.png
+reports/figures/brier_by_horizon.png
+reports/figures/delta_forest.png
+reports/figures/reliability.png
+reports/figures/scatter_vs_market.png
+reports/index.html
+reports/leakage_audit.csv
+reports/leakage_audit_summary.json
+reports/metrics.json
+reports/spend.json
+scripts/check_metrics_arms.py
+scripts/live_weekly.ps1
+scripts/log_milestone.py
+scripts/verify.py
+src/mf/__init__.py
+src/mf/cli.py
+src/mf/commands.py
+src/mf/config.py
+src/mf/core/__init__.py
+src/mf/core/budget.py
+src/mf/core/cache.py
+src/mf/core/hashing.py
+src/mf/core/http.py
+src/mf/core/pricing.py
+src/mf/core/timeutil.py
+src/mf/data/__init__.py
+src/mf/data/common.py
+src/mf/data/dataset.py
+src/mf/data/fixtures.py
+src/mf/data/kalshi.py
+src/mf/data/polymarket.py
+src/mf/data/prices.py
+src/mf/eval/__init__.py
+src/mf/eval/arms.py
+src/mf/eval/audit.py
+src/mf/eval/bootstrap.py
+src/mf/eval/calibration.py
+src/mf/eval/metrics.py
+src/mf/eval/report.py
+src/mf/forecast/__init__.py
+src/mf/forecast/aggregate.py
+src/mf/forecast/calibrate.py
+src/mf/forecast/market_ensemble.py
+src/mf/forecast/pipeline.py
+src/mf/forecast/reason.py
+src/mf/forecast/supervisor.py
+src/mf/live/__init__.py
+src/mf/live/ledger.py
+src/mf/live/run.py
+src/mf/live/score.py
+src/mf/live/select.py
+src/mf/llm/__init__.py
+src/mf/llm/batch.py
+src/mf/llm/client.py
+src/mf/llm/parse.py
+src/mf/llm/prompts.py
+src/mf/retrieval/__init__.py
+src/mf/retrieval/exa_client.py
+src/mf/retrieval/leakage.py
+src/mf/retrieval/pipeline.py
+src/mf/retrieval/queries.py
+src/mf/retrieval/summarize.py
+src/mf/runtime.py
+src/mf/schemas.py
+src/mf/smoke.py
+tests/conftest.py
+tests/fixtures/anthropic/smoke_haiku.json
+tests/fixtures/anthropic/smoke_sonnet5.json
+tests/fixtures/exa/search_synthetic.json
+tests/fixtures/exa/smoke_fast_0.json
+tests/fixtures/exa/smoke_fast_1.json
+tests/fixtures/exa/smoke_instant_0.json
+tests/fixtures/exa/smoke_instant_1.json
+tests/fixtures/kalshi/can_close_early_market.json
+tests/fixtures/kalshi/cutoff.json
+tests/fixtures/kalshi/events_fed_settled.json
+tests/fixtures/kalshi/historical_candles.json
+tests/fixtures/kalshi/historical_markets_fed_jul26.json
+tests/fixtures/kalshi/live_candles.json
+tests/fixtures/kalshi/live_candles_404_for_historical.json
+tests/fixtures/polymarket/event_negrisk.json
+tests/fixtures/polymarket/event_non_yes_no.json
+tests/fixtures/polymarket/prices_history.json
+tests/test_aggregate.py
+tests/test_batch.py
+tests/test_bootstrap.py
+tests/test_budget.py
+tests/test_cache.py
+tests/test_calibrate.py
+tests/test_dataset.py
+tests/test_exa_client.py
+tests/test_kalshi.py
+tests/test_leakage.py
+tests/test_live_ledger.py
+tests/test_llm_client.py
+tests/test_market_ensemble.py
+tests/test_metrics.py
+tests/test_parse.py
+tests/test_polymarket.py
+tests/test_prices.py
+tests/test_pricing.py
+tests/test_prompts.py
+tests/test_reason.py
+tests/test_report.py
+tests/test_retrieval.py
+tests/test_supervisor.py
+uv.lock
+[exit 0]
+git: .env, cache/, state/ are neither tracked nor staged
+
+VERIFY: PASS metrics_sha=84cc418825e1f3bd4569f8015b52883c3ee39edaf0c22190d50fe40ddadca61f
 [exit 0]
 ```
