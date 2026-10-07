@@ -96,7 +96,16 @@ Test set: 200 questions, 126 events. All numbers are machine-inserted.</p>
 </table>
 
 <h2>Leakage checks</h2>
-<table><tr><td>canary_market_brier</td><td>0.190124</td></tr><tr><td>canary_n_scored</td><td>30</td></tr><tr><td>canary_n_total</td><td>30</td></tr><tr><td>canary_noret_ens_brier</td><td>0.162946</td></tr><tr><td>canary_noret_ens_bss_vs_market</td><td>0.142945</td></tr><tr><td>evidence_drop_counts_test</td><td>{&#34;haiku_leak_flag&#34;: 214, &#34;kept&#34;: 690, &#34;low_relevance&#34;: 510, &#34;null_date&#34;: 1914, &#34;over_max_articles&#34;: 429, &#34;over_max_evidence&#34;: 106, &#34;text_post_t0_date&#34;: 5}</td></tr><tr><td>kept_evidence_per_question_test</td><td>3.45</td></tr><tr><td>robustness_aia_excluding_haiku_flagged</td><td>{&#34;aia_brier&#34;: 0.288004, &#34;aia_brier_all&#34;: 0.302893, &#34;market_brier&#34;: 0.170344, &#34;n&#34;: 108}</td></tr><tr><td>test_market_brier</td><td>0.16757</td></tr><tr><td>test_noret_ens_brier</td><td>0.28017</td></tr><tr><td>test_noret_ens_bss_vs_market</td><td>-0.671956</td></tr></table>
+<table><tr><td>canary_market_brier</td><td>0.190124</td></tr><tr><td>canary_n_scored</td><td>30</td></tr><tr><td>canary_n_total</td><td>30</td></tr><tr><td>canary_noret_ens_brier</td><td>0.162946</td></tr><tr><td>canary_noret_ens_bss_vs_market</td><td>0.142945</td></tr><tr><td>evidence_drop_counts_test</td><td>{&#34;haiku_leak_flag&#34;: 214, &#34;kept&#34;: 690, &#34;low_relevance&#34;: 510, &#34;null_date&#34;: 1914, &#34;over_max_articles&#34;: 429, &#34;over_max_evidence&#34;: 106, &#34;text_post_t0_date&#34;: 5}</td></tr><tr><td>kept_evidence_per_question_test</td><td>3.45</td></tr><tr><td>robustness_aia_excluding_haiku_flagged</td><td>{&#34;aia_brier&#34;: 0.288004, &#34;aia_brier_all&#34;: 0.302893, &#34;market_brier&#34;: 0.170344, &#34;n&#34;: 108}</td></tr><tr><td>test_market_brier</td><td>0.16757</td></tr><tr><td>test_noret_ens_brier</td><td>0.28017</td></tr><tr><td>test_noret_ens_bss_vs_market</td><td>-0.671956</td></tr><tr><td>human audit (50 kept items)</td><td>{
+ &#34;leak_or_unsure_rate&#34;: 0.02,
+ &#34;leak_rate&#34;: 0.0,
+ &#34;missing_verdicts&#34;: [],
+ &#34;n&#34;: 50,
+ &#34;verdicts&#34;: {
+  &#34;clean&#34;: 49,
+  &#34;unsure&#34;: 1
+ }
+}</td></tr></table>
 
 <h2>Reliability tables</h2>
 <h3>AIA (supervisor + Platt √3)</h3>
@@ -144,13 +153,24 @@ Test set: 200 questions, 126 events. All numbers are machine-inserted.</p>
 <table><tr><td>dev_base_rate</td><td>0.4</td></tr><tr><td>market_ens_aia_dev_weight</td><td>0.25</td></tr><tr><td>market_ens_aia_fold_weights</td><td>[0.0, 0.03, 0.03, 0.0, 0.05]</td></tr><tr><td>market_ens_halawi_fold_weights</td><td>[0.0, 0.0, 0.03, 0.0, 0.03]</td></tr><tr><td>n_dev_used_for_fits</td><td>50</td></tr><tr><td>platt_coef_fit_on_dev</td><td>0.462131</td></tr><tr><td>platt_coef_fixed</td><td>1.732051</td></tr></table>
 
 <h2>Live track record</h2>
-<p>0 forecasts logged (hash chain OK, head 0000000000000000…); 0 resolved so far.</p>
-
+<p>10 forecasts logged (hash chain OK, head dd4761a1291bec68…); 0 resolved so far.</p>
+<table><tr><th>seq</th><th>created</th><th>question</th><th>p_mkt</th><th>p_aia</th><th>outcome</th></tr>
+<tr><td>0</td><td>2026-10-07</td><td>Will the Democratic Party control the House after the 2026 Midterm ele</td><td>0.925</td>
+<td>0.9548</td><td>open</td></tr><tr><td>1</td><td>2026-10-07</td><td>Will the upper bound of the federal funds rate be above 4.00% followin</td><td>0.22</td>
+<td>0.0945</td><td>open</td></tr><tr><td>2</td><td>2026-10-07</td><td>Will there be no change in Fed interest rates after the October 2026 m</td><td>0.835</td>
+<td>0.342</td><td>open</td></tr><tr><td>3</td><td>2026-10-07</td><td>Sense and Sensibility Rotten Tomatoes score? — this market resolves YE</td><td>0.075</td>
+<td>0.0041</td><td>open</td></tr><tr><td>4</td><td>2026-10-07</td><td>2026 Balance of Power: R Senate, R House</td><td>0.075</td>
+<td>0.0076</td><td>open</td></tr><tr><td>5</td><td>2026-10-07</td><td>Wild Horse Nine Rotten Tomatoes score? — this market resolves YES for:</td><td>0.805</td>
+<td>0.175</td><td>open</td></tr><tr><td>6</td><td>2026-10-07</td><td>Will Benjamin Netanyahu be the next Prime Minister of Israel?</td><td>0.355</td>
+<td>0.4885</td><td>open</td></tr><tr><td>7</td><td>2026-10-07</td><td>The Hunger Games: Sunrise on the Reaping Rotten Tomatoes score? — this</td><td>0.085</td>
+<td>0.0699</td><td>open</td></tr><tr><td>8</td><td>2026-10-07</td><td>Billionaire one-time wealth tax passes in California election 2026?</td><td>0.285</td>
+<td>0.3313</td><td>open</td></tr><tr><td>9</td><td>2026-10-07</td><td>You Can See Everything Rotten Tomatoes score? — this market resolves Y</td><td>0.935</td>
+<td>0.5115</td><td>open</td></tr></table>
 
 <h2>Spend</h2>
-<table><tr><td>Anthropic total</td><td>$13.96 of $30.00</td></tr>
-<tr><td>Exa 2026-10</td><td>$3.17 of $9.00</td></tr>
-<tr><td>Paid API calls</td><td>4129</td></tr></table>
+<table><tr><td>Anthropic total</td><td>$14.56 of $30.00</td></tr>
+<tr><td>Exa 2026-10</td><td>$3.29 of $9.00</td></tr>
+<tr><td>Paid API calls</td><td>4244</td></tr></table>
 
 <h2>Links</h2>
 <ul class="muted"><li>Halawi et al. 2024: https://arxiv.org/abs/2402.18563</li>

@@ -5,7 +5,22 @@
 
 ## Verify
 
-_Pending: `uv run python scripts/verify.py` output goes here once the project is complete._
+<!-- VERIFY:START -->
+Not yet run (filled in verbatim after `uv run python scripts/verify.py` passes).
+<!-- VERIFY:END -->
+
+## Summary
+
+**The forecaster does not beat the market, and uncalibrated it does not even beat a coin flip.** On 200
+leak-free test questions (Kalshi + Polymarket, created after Claude Sonnet 5's training cutoff), every LLM-only
+arm has a higher (worse) Brier score than the market price at t0, and every *uncalibrated* LLM arm is also worse
+than a constant 0.5. Only the secondary arm whose calibration is fitted on the dev split (it shrinks forecasts
+toward 0.5) edges past 0.5 and the dev base rate, and it remains far behind the market. Both pre-registered
+primary comparisons came out in the wrong direction with 95% CIs that exclude zero: the AIA recipe
+(supervisor + fixed √3 extremization) is *worse* than the Halawi baseline, and blending AIA with the market
+is very slightly *worse* than the market alone. The one component that helped was the AIA supervisor on its
+own, by a small margin. The headline table below is generated from `reports/metrics.json`; the
+explanations in "What didn't work" are hypotheses, not findings.
 
 ## Headline
 
@@ -39,15 +54,99 @@ _Auto-generated from `reports/metrics.json` by `mf report`. Test set: 200 questi
 
 ## What didn't work
 
-_Pending: filled after the backtest._
+<!-- FAILURES:START -->
+| Arm | Brier | ΔBrier vs market [95% CI] | Brier − 0.25 (const 0.5) | ECE |
+|---|---|---|---|---|
+| Dev base rate | 0.2410 | +0.0734 [+0.0439, +0.1016] | -0.0090 | 0.0050 |
+| No retrieval, 1 sample | 0.2787 | +0.1111 [+0.0669, +0.1550] | +0.0287 | 0.1911 |
+| No retrieval, K=5 | 0.2802 | +0.1126 [+0.0691, +0.1561] | +0.0302 | 0.2167 |
+| Retrieval, 1 sample | 0.2769 | +0.1094 [+0.0660, +0.1531] | +0.0269 | 0.2093 |
+| Halawi (retrieval, K=5) | 0.2794 | +0.1118 [+0.0692, +0.1552] | +0.0294 | 0.2020 |
+| Halawi + Platt √3 | 0.3140 | +0.1464 [+0.0956, +0.1981] | +0.0640 | 0.2764 |
+| Halawi + supervisor | 0.2695 | +0.1019 [+0.0611, +0.1430] | +0.0195 | 0.1926 |
+| AIA (supervisor + Platt √3) | 0.3029 | +0.1353 [+0.0868, +0.1848] | +0.0529 | 0.2651 |
+| AIA, Platt fit on dev | 0.2375 | +0.0700 [+0.0387, +0.1008] | -0.0125 | 0.0888 |
+| Halawi ⊕ market | 0.1682 | +0.0006 [+0.0001, +0.0012] | -0.0818 | 0.0706 |
+| AIA ⊕ market (CV) | 0.1688 | +0.0012 [+0.0004, +0.0021] | -0.0812 | 0.0687 |
+| AIA ⊕ market (dev w) | 0.1763 | +0.0087 [-0.0023, +0.0189] | -0.0737 | 0.0624 |
+
+Supervisor triggered vs not (Brier):
+
+- not_triggered (n=106): market 0.1918, halawi 0.2872, aia 0.3233
+- triggered (n=94): market 0.1402, halawi 0.2706, aia 0.2799
+
+Platt coefficient fit on dev: 0.462 (AIA's fixed value is √3 ≈ 1.732). Market-blend weight on AIA: dev-fit 0.25; cross-fitted folds [0.0, 0.03, 0.03, 0.0, 0.05].
+<!-- FAILURES:END -->
+
+What the numbers above say, in words (each point is checkable against the table or `metrics.json`):
+
+1. **Every LLM-only arm loses to the market; every uncalibrated one also loses to 0.5.** The model discriminates a little (it is
+   positively correlated with outcomes) but is badly overconfident: it puts many questions near 0 or 1 that
+   resolve the other way (see `reports/figures/reliability.png`).
+2. **Extremization made it worse, not better.** AIA's fixed Platt √3 assumes the averaged ensemble is
+   *under*-confident. Here the reverse holds: the Platt coefficient fitted on the 50 dev questions is below 1,
+   i.e. the data asks to *shrink* forecasts toward 0.5, and the dev-fitted variant is the best LLM-only arm.
+   This is the main reason `aia` loses to `halawi`.
+3. **The supervisor helped a little.** `halawi_sup` beats `halawi` with a CI just below zero (secondary
+   comparison, so treat as suggestive). It fired on about half the questions but reported "high" confidence,
+   and therefore replaced the ensemble mean, only rarely.
+4. **Retrieval did not help.** With-retrieval and no-retrieval ensembles are statistically indistinguishable.
+   Exa's date filter returns many undated pages that must be discarded, so evidence per question is thin;
+   the questions are also short-horizon and data-release driven (CPI prints, GPU rental prices, post counts),
+   where news summaries carry little signal relative to the market.
+5. **The market blend learned to ignore the LLM.** Cross-fitted blend weights on the LLM are near zero, so
+   `market_ens_*` is essentially the market, and the small residual weight costs a little.
+6. **No pre-registered subset rescues it.** By venue, category, horizon bucket, and supervisor-triggered, the
+   market is better everywhere (breakdowns in `metrics.json` and `reports/index.html`).
+
+Hypotheses (not tested here): stale world knowledge (the 2026 Iran war and its effect on oil, shipping and
+inflation post-dates the model's training data, and thin retrieval rarely filled the gap); prompts that invite
+crisp "status quo" reasoning at short horizons; a question mix dominated by threshold and bucket markets where
+the market price encodes data the model cannot see; and N=200 (minimum detectable effect ≈ 0.012).
 
 ## Leakage
 
-_Pending: canary vs test, human audit rate, filter counts._
+<!-- LEAKAGE:START -->
+| Check | Value |
+|---|---|
+| Canary (pre-cutoff, n=30): no-retrieval K=5 Brier | 0.1629 (market 0.1901) |
+| Test (post-cutoff, n=200): no-retrieval K=5 Brier | 0.2802 (market 0.1676) |
+| Kept evidence per test question (mean) | 3.45 |
+| Evidence dropped on test questions, by filter | haiku_leak_flag=214, kept=690, low_relevance=510, null_date=1914, over_max_articles=429, over_max_evidence=106, text_post_t0_date=5 |
+| Robustness: AIA Brier excluding questions whose retrieval surfaced any helper-flagged item | 0.2880 on n=108 (all questions 0.3029; market on the same subset 0.1703) |
+| Human audit of 50 random kept items | leak 0.0%, leak-or-unsure 2.0% (verdicts {'clean': 49, 'unsure': 1}) |
+<!-- LEAKAGE:END -->
+
+The canary behaves as a leak detector should: on questions resolved *before* the model's training cutoff, the
+no-retrieval ensemble beats the market (it likely remembers outcomes); on the post-cutoff test set the same arm
+is far worse than the market. The human audit (50 random kept evidence items, reviewed by the implementer,
+Claude, reading each summary, URL and date against t0) found no post-t0 information; the one "unsure" item is
+a "latest" statistics page whose stated publish date is older than its content (content still pre-t0). The full
+CSV is `reports/leakage_audit.csv`.
 
 ## Cost
 
-_Pending: from `reports/spend.json`._
+<!-- COST:START -->
+- Anthropic total: $14.56 of $30.00 cap (backtest $13.96 of $23.00).
+- Exa 2026-10: $3.29 of $9.00 monthly cap.
+- Paid API calls (cache misses): 4244.
+
+| Provider | Op | Month | Calls | USD |
+|---|---|---|---|---|
+| anthropic | query_gen | 2026-10 | 260 | 0.1449 |
+| anthropic | reason | 2026-10 | 135 | 0.9905 |
+| anthropic | reason_batch | 2026-10 | 1200 | 4.5677 |
+| anthropic | reason_noret | 2026-10 | 50 | 0.3213 |
+| anthropic | reason_noret_batch | 2026-10 | 1150 | 4.0529 |
+| anthropic | relevance_summary | 2026-10 | 377 | 2.7379 |
+| anthropic | smoke_batch_batch | 2026-10 | 1 | 0.0000 |
+| anthropic | smoke_helper | 2026-10 | 1 | 0.0001 |
+| anthropic | smoke_reasoner | 2026-10 | 1 | 0.0009 |
+| anthropic | supervisor_disagree | 2026-10 | 131 | 1.2516 |
+| anthropic | supervisor_update | 2026-10 | 131 | 0.4952 |
+| exa | search_fast | 2026-10 | 19 | 0.1330 |
+| exa | search_instant | 2026-10 | 788 | 3.1520 |
+<!-- COST:END -->
 
 ## Deviations from PLAN.md
 
@@ -678,5 +777,37 @@ $ uv run mf budget
 Anthropic: $13.9552 of $30.00 total (backtest $13.9552 of $23.00)
 Exa 2026-10: $3.1650 of $9.00
 BUDGET OK: all caps respected
+[exit 0]
+```
+
+### M9 — Leakage audit (PASS, 2026-10-07)
+
+```
+$ uv run mf audit-leakage --summarize
+audited=50 verdicts={'clean': 49, 'unsure': 1} LEAK RATE=0.00% (leak or unsure 2.00%)
+[exit 0]
+$ uv run python -c "import json;m=json.load(open('reports/metrics.json'));l=m['leakage'];print({k:l[k] for k in ('canary_n_scored','canary_noret_ens_brier','canary_market_brier','test_noret_ens_brier','test_market_brier')})"
+{'canary_n_scored': 30, 'canary_noret_ens_brier': 0.162946, 'canary_market_brier': 0.190124, 'test_noret_ens_brier': 0.28017, 'test_market_brier': 0.16757}
+[exit 0]
+```
+
+### M10 — Live mode (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_live_ledger.py -q
+.........                                                                                    [100%]
+9 passed in 0.33s
+[exit 0]
+$ uv run mf live --n 3 --dry-run
+[live dry-run] seq=0 poly:2063128 p_mkt=0.97 halawi=0.45 aia=0.414 aia+mkt=0.7476 hash=11f4ea15
+[live dry-run] seq=1 poly:2063129 p_mkt=0.03 halawi=0.3567 aia=0.2647 aia+mkt=0.1239 hash=977fcc32
+[live dry-run] seq=2 poly:2063130 p_mkt=0.03 halawi=0.3167 aia=0.2088 aia+mkt=0.1015 hash=6338425f
+[live dry-run] temp ledger OK n=3 head=6338425f2847f1d4c0e5a5cf1e6803095295d40373b636845b4e4ec66ec58e82; network calls: llm=24 (fake) exa=2 (mocked); real ledger untouched
+[exit 0]
+$ uv run mf verify-ledger
+LEDGER OK n=10 head=dd4761a1291bec68a002420291764aa19fc1678430412ae9e5dc7920c2f5dbdc
+[exit 0]
+$ git log --oneline -- data/live/forecasts.jsonl
+d740965 live: 2026-10-07 n=10 head=dd4761a1
 [exit 0]
 ```

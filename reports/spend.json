@@ -2,21 +2,21 @@
  "anthropic_backtest_cap_usd": 23.0,
  "anthropic_backtest_usd": 13.955241,
  "anthropic_cap_usd": 30.0,
- "anthropic_total_usd": 13.955241,
+ "anthropic_total_usd": 14.562981,
  "by_provider_op_month": [
   {
-   "calls": 250,
+   "calls": 260,
    "month": "2026-10",
    "op": "query_gen",
    "provider": "anthropic",
-   "usd": 0.139233
+   "usd": 0.144909
   },
   {
-   "calls": 85,
+   "calls": 135,
    "month": "2026-10",
    "op": "reason",
    "provider": "anthropic",
-   "usd": 0.58612
+   "usd": 0.9905
   },
   {
    "calls": 1200,
@@ -40,11 +40,11 @@
    "usd": 4.05287
   },
   {
-   "calls": 362,
+   "calls": 377,
    "month": "2026-10",
    "op": "relevance_summary",
    "provider": "anthropic",
-   "usd": 2.610746
+   "usd": 2.737902
   },
   {
    "calls": 1,
@@ -68,18 +68,18 @@
    "usd": 0.000862
   },
   {
-   "calls": 126,
+   "calls": 131,
    "month": "2026-10",
    "op": "supervisor_disagree",
    "provider": "anthropic",
-   "usd": 1.201834
+   "usd": 1.251616
   },
   {
-   "calls": 126,
+   "calls": 131,
    "month": "2026-10",
    "op": "supervisor_update",
    "provider": "anthropic",
-   "usd": 0.474468
+   "usd": 0.495214
   },
   {
    "calls": 19,
@@ -89,16 +89,16 @@
    "usd": 0.133
   },
   {
-   "calls": 758,
+   "calls": 788,
    "month": "2026-10",
    "op": "search_instant",
    "provider": "exa",
-   "usd": 3.032
+   "usd": 3.152
   }
  ],
  "exa_by_month_usd": {
-  "2026-10": 3.165
+  "2026-10": 3.285
  },
  "exa_monthly_cap_usd": 9.0,
- "n_paid_calls": 4129
+ "n_paid_calls": 4244
 }

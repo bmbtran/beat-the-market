@@ -207,12 +207,70 @@ def metrics_block(m: dict) -> str:
     return "\n".join(lines)
 
 
-def replace_block(text: str, block: str) -> str:
-    if START not in text or END not in text:
-        raise ValueError("METRICS markers missing")
-    pre, rest = text.split(START, 1)
-    _, post = rest.split(END, 1)
-    return f"{pre}{START}\n{block}\n{END}{post}"
+def replace_block(text: str, block: str, name: str = "METRICS") -> str:
+    start, end = f"<!-- {name}:START -->", f"<!-- {name}:END -->"
+    if start not in text or end not in text:
+        raise ValueError(f"{name} markers missing")
+    pre, rest = text.split(start, 1)
+    _, post = rest.split(end, 1)
+    return f"{pre}{start}\n{block}\n{end}{post}"
+
+
+def _ci(d: dict) -> str:
+    return f"{d['delta']:+.4f} [{d['ci_low']:+.4f}, {d['ci_high']:+.4f}]"
+
+
+def failures_block(m: dict) -> str:
+    """Every arm vs the market and vs a constant 0.5 (paired ΔBrier with 95% CI vs market)."""
+    vm, a = m["delta_brier_vs_market"], m["arms"]
+    rows = ["| Arm | Brier | ΔBrier vs market [95% CI] | Brier − 0.25 (const 0.5) | ECE |", "|---|---|---|---|---|"]
+    for arm in ORDER:
+        if arm in ("market", "const_0.5"):
+            continue
+        d05 = a[arm]["brier"] - a["const_0.5"]["brier"]
+        rows.append(f"| {ARM_LABELS[arm]} | {a[arm]['brier']:.4f} | {_ci(vm[arm])} | {d05:+.4f} | {a[arm]['ece']:.4f} |")
+    rows += ["", "Supervisor triggered vs not (Brier):", ""]
+    for k, r in m["breakdowns"]["supervisor_triggered"].items():
+        rows.append(f"- {k} (n={r['n']}): market {r['market']:.4f}, halawi {r['halawi']:.4f}, aia {r['aia']:.4f}")
+    f = m["fits"]
+    rows += ["", f"Platt coefficient fit on dev: {f['platt_coef_fit_on_dev']:.3f} (AIA's fixed value is √3 ≈ 1.732). "
+                 f"Market-blend weight on AIA: dev-fit {f['market_ens_aia_dev_weight']:.2f}; "
+                 f"cross-fitted folds {f['market_ens_aia_fold_weights']}."]
+    return "\n".join(rows)
+
+
+def leakage_md(m: dict, audit: dict | None) -> str:
+    lk = m["leakage"]
+    rb = lk["robustness_aia_excluding_haiku_flagged"]
+    drops = ", ".join(f"{k}={v}" for k, v in lk["evidence_drop_counts_test"].items())
+    out = [
+        "| Check | Value |", "|---|---|",
+        f"| Canary (pre-cutoff, n={lk.get('canary_n_scored')}): no-retrieval K=5 Brier | "
+        f"{lk.get('canary_noret_ens_brier', float('nan')):.4f} (market {lk.get('canary_market_brier', float('nan')):.4f}) |",
+        f"| Test (post-cutoff, n={m['n_test_scored']}): no-retrieval K=5 Brier | "
+        f"{lk['test_noret_ens_brier']:.4f} (market {lk['test_market_brier']:.4f}) |",
+        f"| Kept evidence per test question (mean) | {lk['kept_evidence_per_question_test']:.2f} |",
+        f"| Evidence dropped on test questions, by filter | {drops} |",
+        f"| Robustness: AIA Brier excluding questions whose retrieval surfaced any helper-flagged item | "
+        f"{rb['aia_brier']:.4f} on n={rb['n']} (all questions {rb['aia_brier_all']:.4f}; market on the same subset "
+        f"{rb['market_brier']:.4f}) |",
+    ]
+    if audit:
+        out.append(f"| Human audit of {audit['n']} random kept items | leak {audit['leak_rate']:.1%}, leak-or-unsure "
+                   f"{audit['leak_or_unsure_rate']:.1%} (verdicts {audit['verdicts']}) |")
+    return "\n".join(out)
+
+
+def cost_md(spend: dict) -> str:
+    out = [f"- Anthropic total: ${spend['anthropic_total_usd']:.2f} of ${spend['anthropic_cap_usd']:.2f} cap "
+           f"(backtest ${spend['anthropic_backtest_usd']:.2f} of ${spend['anthropic_backtest_cap_usd']:.2f}).",
+           *(f"- Exa {k}: ${v:.2f} of ${spend['exa_monthly_cap_usd']:.2f} monthly cap."
+             for k, v in spend["exa_by_month_usd"].items()),
+           f"- Paid API calls (cache misses): {spend['n_paid_calls']}.", "",
+           "| Provider | Op | Month | Calls | USD |", "|---|---|---|---|---|"]
+    for r in spend["by_provider_op_month"]:
+        out.append(f"| {r['provider']} | {r['op']} | {r['month']} | {r['calls']} | {r['usd']:.4f} |")
+    return "\n".join(out)
 
 
 def extract_block(text: str) -> str:
@@ -333,8 +391,14 @@ def build_report(s, log=print) -> dict:
         metrics_sha=file_sha256(mpath))
     (rep / "index.html").write_text(html, encoding="utf-8", newline="\n")
     block = metrics_block(m)
+    audit_d = json.loads(audit.read_text(encoding="utf-8")) if audit.exists() else None
+    extra = {"FAILURES": failures_block(m), "LEAKAGE": leakage_md(m, audit_d), "COST": cost_md(spend)}
     for doc in ("README.md", "RESULTS.md"):
         p = s.root / doc
-        p.write_text(replace_block(p.read_text(encoding="utf-8"), block), encoding="utf-8", newline="\n")
+        text = replace_block(p.read_text(encoding="utf-8"), block)
+        for name, body in extra.items():
+            if f"<!-- {name}:START -->" in text:
+                text = replace_block(text, body, name)
+        p.write_text(text, encoding="utf-8", newline="\n")
     log(f"report: {len(names)} figures, reports/index.html, reports/spend.json, METRICS blocks updated")
     return {"figures": names, "metrics_sha": file_sha256(mpath)}

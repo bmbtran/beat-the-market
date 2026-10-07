@@ -1,0 +1,10 @@
+{
+ "leak_or_unsure_rate": 0.02,
+ "leak_rate": 0.0,
+ "missing_verdicts": [],
+ "n": 50,
+ "verdicts": {
+  "clean": 49,
+  "unsure": 1
+ }
+}
