@@ -162,7 +162,9 @@ def poly_candidates(pc: P.PolymarketClient, s: Settings, win: Window, log=print)
     end_min = (win.created_min + s.dataset.min_lifetime_days * DAY) if win.created_min else win.resolved_min
     events = pc.events_by_volume(True, end_min, win.close_max, s.dataset.poly_min_volume)
     counts["events_listed"] = len(events)
-    log(f"[poly:{win.name}] {len(events)} closed events listed")
+    counts["windows_truncated_by_page_cap"] = len(pc.truncated_windows)
+    log(f"[poly:{win.name}] {len(events)} closed events listed; truncated windows: {pc.truncated_windows}")
+    pc.truncated_windows.clear()
     out = []
     for ev in events:
         cat = P.classify(ev)

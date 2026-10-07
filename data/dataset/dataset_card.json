@@ -1,0 +1,180 @@
+{
+  "all": {
+    "base_rate_yes": 0.404,
+    "by_category": {
+      "Climate and Weather": 15,
+      "Economics": 59,
+      "Elections": 27,
+      "Financials": 46,
+      "Politics": 65,
+      "Science and Technology": 16,
+      "World": 22
+    },
+    "by_split": {
+      "dev": 50,
+      "test": 200
+    },
+    "by_venue": {
+      "kalshi": 125,
+      "polymarket": 125
+    },
+    "mean_p_mkt": 0.3675,
+    "n": 250,
+    "n_events": 158,
+    "p_mkt_source": {
+      "last_trade": 126,
+      "mid": 115,
+      "previous": 9
+    },
+    "t0_range": [
+      "2026-02-08T18:00:00Z",
+      "2026-09-24T21:00:00Z"
+    ]
+  },
+  "built_utc": "2026-10-07T03:09:14.996633Z",
+  "canary": {
+    "base_rate_yes": 0.4333,
+    "by_category": {
+      "Climate and Weather": 2,
+      "Companies": 1,
+      "Economics": 3,
+      "Elections": 5,
+      "Politics": 8,
+      "Science and Technology": 6,
+      "World": 5
+    },
+    "by_split": {
+      "canary": 30
+    },
+    "by_venue": {
+      "kalshi": 15,
+      "polymarket": 15
+    },
+    "mean_p_mkt": 0.3262,
+    "n": 30,
+    "n_events": 22,
+    "p_mkt_source": {
+      "last_trade": 15,
+      "mid": 13,
+      "previous": 2
+    },
+    "t0_range": [
+      "2025-01-12T14:00:00Z",
+      "2025-05-28T14:00:00Z"
+    ]
+  },
+  "dev": {
+    "base_rate_yes": 0.4,
+    "by_category": {
+      "Climate and Weather": 7,
+      "Economics": 13,
+      "Elections": 2,
+      "Financials": 9,
+      "Politics": 16,
+      "World": 3
+    },
+    "by_split": {
+      "dev": 50
+    },
+    "by_venue": {
+      "kalshi": 29,
+      "polymarket": 21
+    },
+    "mean_p_mkt": 0.3724,
+    "n": 50,
+    "n_events": 32,
+    "p_mkt_source": {
+      "last_trade": 22,
+      "mid": 25,
+      "previous": 3
+    },
+    "t0_range": [
+      "2026-02-08T18:00:00Z",
+      "2026-03-26T01:00:00Z"
+    ]
+  },
+  "funnel_canary": {
+    "closed_before_t0_plus_1d_yes_rate": 0.6833,
+    "drop:closed_before_t0_plus_1d": 120,
+    "drop:kalshi_closed_early_gt_3d": 56,
+    "drop:lifetime_lt_7d": 5820,
+    "drop:no_price_within_window": 3,
+    "drop:p_mkt_extreme": 3,
+    "drop:resolved_outside_window": 4717,
+    "drop:scheduled_close_after_window": 122819,
+    "drop:volume": 5138,
+    "kalshi:drop:not_binary_or_unresolved": 4188,
+    "kalshi:markets_seen": 138252,
+    "kalshi:series_allowed": 9381,
+    "kalshi:series_listed": 9990,
+    "pass_static": 1966,
+    "poly:drop:category_or_excluded_tag": 10318,
+    "poly:drop:not_binary_yes_no_or_unresolved": 91,
+    "poly:events_listed": 5419,
+    "poly:markets_seen": 6663,
+    "poly:windows_truncated_by_page_cap": 0,
+    "pool_events": 653,
+    "pool_kalshi": 868,
+    "pool_polymarket": 1098,
+    "price_checked": 36
+  },
+  "funnel_main": {
+    "closed_before_t0_plus_1d_yes_rate": 0.4533,
+    "drop:closed_before_t0_plus_1d": 653,
+    "drop:created_before_window": 55820,
+    "drop:kalshi_closed_early_gt_3d": 3110,
+    "drop:lifetime_lt_7d": 66913,
+    "drop:no_price_within_window": 5,
+    "drop:p_mkt_extreme": 80,
+    "drop:resolved_outside_window": 33,
+    "drop:scheduled_close_after_window": 15854,
+    "drop:title_short": 2,
+    "drop:volume": 52345,
+    "kalshi:drop:not_binary_or_unresolved": 4188,
+    "kalshi:markets_seen": 138252,
+    "kalshi:series_allowed": 9381,
+    "kalshi:series_listed": 9990,
+    "pass_static": 8852,
+    "poly:drop:category_or_excluded_tag": 612717,
+    "poly:drop:not_binary_yes_no_or_unresolved": 745,
+    "poly:events_listed": 63224,
+    "poly:markets_seen": 70263,
+    "poly:windows_truncated_by_page_cap": 30,
+    "pool_events": 2036,
+    "pool_kalshi": 5254,
+    "pool_polymarket": 3598,
+    "price_checked": 335
+  },
+  "kalshi_historical_cutoff": "2026-08-07T00:00:00Z",
+  "test": {
+    "base_rate_yes": 0.405,
+    "by_category": {
+      "Climate and Weather": 8,
+      "Economics": 46,
+      "Elections": 25,
+      "Financials": 37,
+      "Politics": 49,
+      "Science and Technology": 16,
+      "World": 19
+    },
+    "by_split": {
+      "test": 200
+    },
+    "by_venue": {
+      "kalshi": 96,
+      "polymarket": 104
+    },
+    "mean_p_mkt": 0.3663,
+    "n": 200,
+    "n_events": 126,
+    "p_mkt_source": {
+      "last_trade": 104,
+      "mid": 90,
+      "previous": 6
+    },
+    "t0_range": [
+      "2026-03-26T08:00:00Z",
+      "2026-09-24T21:00:00Z"
+    ]
+  }
+}

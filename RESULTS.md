@@ -57,6 +57,22 @@ _Pending: from `reports/spend.json`._
 - **Exa cost:** actual `costDollars.total` was $0.004 (instant) / $0.007 (fast) per 5-result search with
   highlights, i.e. highlights were not billed separately; the estimator stays pessimistic ($0.009).
 - **Haiku cache-write price [UNVERIFIED in plan]:** irrelevant, no cache writes are made on Haiku.
+- **Polymarket pagination:** Gamma rejects `offset` > ~2000 ("use /events/keyset", which returned HTTP 500 with
+  these filters). The end-date range is split into 7-day windows, each listed by volume. In 30 of the main-window
+  weeks more than 2,000 closed events (mostly sports/crypto) exceeded $50k, so those windows stopped at
+  ~$90–120k event volume: the **effective Polymarket floor in busy weeks was ~$90–120k instead of $50k**. This
+  tilts the Polymarket half toward more liquid markets, which makes the market baseline harder to beat, not easier.
+  Recorded as `poly:windows_truncated_by_page_cap` in `dataset_card.json`. The canary window was not truncated.
+- **Dataset size:** 250 questions (dev 50 / test 200, 125 per venue, 158 events) and 30 canary questions were
+  reached without relaxing the volume floors.
+- **Residual selection bias:** 653 otherwise-eligible markets stopped trading before t0+1d (resolved early) and
+  were dropped; their YES rate is 0.453 vs 0.404 in the dataset, so the dataset is slightly NO-tilted relative to
+  the full population.
+- **Count/"mention"-style markets** (e.g. "Will Elon Musk post 180–199 tweets…", "Will Trump say 'Turkey'…") enter via
+  Polymarket's politics tags and Kalshi Politics series; Kalshi's separate "Mentions" category is excluded. No
+  consistent rule removes them across venues, so they stay in and are noted as a limitation.
+- **Dataset determinism:** a second `mf build-dataset` (from the HTTP cache) produced byte-identical
+  `questions.jsonl` / `canary_precutoff.jsonl` (sha256 d17c4437… / 966498ec…).
 
 ## Milestone log
 
@@ -160,5 +176,144 @@ $ uv run pytest tests/test_metrics.py tests/test_bootstrap.py -q
 $ uv run pytest tests/test_calibrate.py tests/test_supervisor.py tests/test_market_ensemble.py -q
 .............                                                                                [100%]
 13 passed in 31.06s
+[exit 0]
+```
+
+### M4 — Retrieval pipeline (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_retrieval.py tests/test_leakage.py -q
+..........                                                                                   [100%]
+10 passed in 0.45s
+[exit 0]
+$ uv run mf retrieve --split dev --limit 10 --dry-run
+DRY RUN retrieve split=dev n=10
+  helper LLM calls: 0 cached, 20 to make
+  Exa searches:     0 cached, 20 to make
+  PROJECTED: anthropic $0.1507, exa $0.1800
+  network calls made: 0
+[exit 0]
+```
+
+### M2 — Market data + dataset (PASS, 2026-10-07)
+
+```
+$ uv run pytest tests/test_kalshi.py tests/test_polymarket.py tests/test_prices.py tests/test_dataset.py -q
+.......................                                                                      [100%]
+23 passed in 0.26s
+[exit 0]
+$ uv run mf build-dataset
+[kalshi] 9381 allowed series (of 9990 listed)
+[kalshi] series 0/9381  markets so far=0  http_calls=0
+[kalshi] series 250/9381  markets so far=681  http_calls=0
+[kalshi] series 500/9381  markets so far=1939  http_calls=0
+[kalshi] series 750/9381  markets so far=2797  http_calls=0
+[kalshi] series 1000/9381  markets so far=3842  http_calls=0
+[kalshi] series 1250/9381  markets so far=5143  http_calls=0
+[kalshi] series 1500/9381  markets so far=6284  http_calls=0
+[kalshi] series 1750/9381  markets so far=7607  http_calls=0
+[kalshi] series 2000/9381  markets so far=9491  http_calls=0
+[kalshi] series 2250/9381  markets so far=10390  http_calls=0
+[kalshi] series 2500/9381  markets so far=11439  http_calls=0
+[kalshi] series 2750/9381  markets so far=12205  http_calls=0
+[kalshi] series 3000/9381  markets so far=14238  http_calls=0
+[kalshi] series 3250/9381  markets so far=14991  http_calls=0
+[kalshi] series 3500/9381  markets so far=15928  http_calls=0
+[kalshi] series 3750/9381  markets so far=18109  http_calls=0
+[kalshi] series 4000/9381  markets so far=18923  http_calls=0
+[kalshi] series 4250/9381  markets so far=19766  http_calls=0
+[kalshi] series 4500/9381  markets so far=25602  http_calls=0
+[kalshi] series 4750/9381  markets so far=32691  http_calls=0
+[kalshi] series 5000/9381  markets so far=37422  http_calls=0
+[kalshi] series 5250/9381  markets so far=40255  http_calls=0
+[kalshi] series 5500/9381  markets so far=43345  http_calls=0
+[kalshi] series 5750/9381  markets so far=44553  http_calls=0
+[kalshi] series 6000/9381  markets so far=49026  http_calls=0
+[kalshi] series 6250/9381  markets so far=52896  http_calls=0
+[kalshi] series 6500/9381  markets so far=58709  http_calls=0
+[kalshi] series 6750/9381  markets so far=61777  http_calls=0
+[kalshi] series 7000/9381  markets so far=70365  http_calls=0
+[kalshi] series 7250/9381  markets so far=75053  http_calls=0
+[kalshi] series 7500/9381  markets so far=80370  http_calls=0
+[kalshi] series 7750/9381  markets so far=92212  http_calls=0
+[kalshi] series 8000/9381  markets so far=99275  http_calls=0
+[kalshi] series 8250/9381  markets so far=105025  http_calls=0
+[kalshi] series 8500/9381  markets so far=118678  http_calls=0
+[kalshi] series 8750/9381  markets so far=123793  http_calls=0
+[kalshi] series 9000/9381  markets so far=128653  http_calls=0
+[kalshi] series 9250/9381  markets so far=134837  http_calls=0
+[kalshi] 134064 binary resolved candidates
+[poly:main] 63224 closed events listed; truncated windows: [(datetime.datetime(2026, 2, 8, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 2, 15, 0, 0, tzinfo=datetime.timezone.utc), 90469.328709), (datetime.datetime(2026, 2, 15, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 2, 22, 0, 0, tzinfo=datetime.timezone.utc), 122172.000241), (datetime.datetime(2026, 2, 22, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 3, 1, 0, 0, tzinfo=datetime.timezone.utc), 115245.851316), (datetime.datetime(2026, 3, 1, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 3, 8, 0, 0, tzinfo=datetime.timezone.utc), 96227.267149), (datetime.datetime(2026, 3, 29, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 4, 5, 0, 0, tzinfo=datetime.timezone.utc), 120196.34479199999), (datetime.datetime(2026, 4, 5, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 4, 12, 0, 0, tzinfo=datetime.timezone.utc), 119345.8800449999), (datetime.datetime(2026, 4, 12, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc), 109734.80150199952), (datetime.datetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 4, 26, 0, 0, tzinfo=datetime.timezone.utc), 104903.91951200001), (datetime.datetime(2026, 4, 26, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 5, 3, 0, 0, tzinfo=datetime.timezone.utc), 86066.80265400004), (datetime.datetime(2026, 5, 3, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 5, 10, 0, 0, tzinfo=datetime.timezone.utc), 79801.46212000004), (datetime.datetime(2026, 5, 10, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 5, 17, 0, 0, tzinfo=datetime.timezone.utc), 82755.22291799966), (datetime.datetime(2026, 5, 17, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 5, 24, 0, 0, tzinfo=datetime.timezone.utc), 75661.69674199997), (datetime.datetime(2026, 5, 24, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 5, 31, 0, 0, tzinfo=datetime.timezone.utc), 77162.98686699993), (datetime.datetime(2026, 5, 31, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 6, 7, 0, 0, tzinfo=datetime.timezone.utc), 79730.51703299987), (datetime.datetime(2026, 6, 7, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 6, 14, 0, 0, tzinfo=datetime.timezone.utc), 65713.27025900001), (datetime.datetime(2026, 6, 14, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 6, 21, 0, 0, tzinfo=datetime.timezone.utc), 75158.48074799996), (datetime.datetime(2026, 6, 21, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 6, 28, 0, 0, tzinfo=datetime.timezone.utc), 82013.08744699997), (datetime.datetime(2026, 6, 28, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 7, 5, 0, 0, tzinfo=datetime.timezone.utc), 87102.728026), (datetime.datetime(2026, 7, 5, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 7, 12, 0, 0, tzinfo=datetime.timezone.utc), 77426.85154700001), (datetime.datetime(2026, 7, 12, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 7, 19, 0, 0, tzinfo=datetime.timezone.utc), 77391.4468289999), (datetime.datetime(2026, 7, 19, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 7, 26, 0, 0, tzinfo=datetime.timezone.utc), 78806.16390899997), (datetime.datetime(2026, 7, 26, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 8, 2, 0, 0, tzinfo=datetime.timezone.utc), 64970.49506799986), (datetime.datetime(2026, 8, 2, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 8, 9, 0, 0, tzinfo=datetime.timezone.utc), 60524.78990699995), (datetime.datetime(2026, 8, 9, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 8, 16, 0, 0, tzinfo=datetime.timezone.utc), 60276.381786999955), (datetime.datetime(2026, 8, 16, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 8, 23, 0, 0, tzinfo=datetime.timezone.utc), 63322.97181899999), (datetime.datetime(2026, 8, 23, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 8, 30, 0, 0, tzinfo=datetime.timezone.utc), 61436.94866100005), (datetime.datetime(2026, 8, 30, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 9, 6, 0, 0, tzinfo=datetime.timezone.utc), 63026.51428099999), (datetime.datetime(2026, 9, 6, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 9, 13, 0, 0, tzinfo=datetime.timezone.utc), 54294.589076), (datetime.datetime(2026, 9, 13, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 9, 20, 0, 0, tzinfo=datetime.timezone.utc), 53510.21049900002), (datetime.datetime(2026, 9, 20, 0, 0, tzinfo=datetime.timezone.utc), datetime.datetime(2026, 9, 27, 0, 0, tzinfo=datetime.timezone.utc), 55913.222873)]
+[main] pool after static filters: 8852 (kalshi=5254, poly=3598)
+[sample:test] 100/250  {'kalshi': 100}
+[sample:test] 125/250  {'kalshi': 125}
+[sample:test] 200/250  {'kalshi': 125, 'polymarket': 75}
+[sample:test] 225/250  {'kalshi': 125, 'polymarket': 100}
+[sample:test] 250/250  {'kalshi': 125, 'polymarket': 125}
+[poly:canary] 5419 closed events listed; truncated windows: []
+[canary] pool after static filters: 1966 (kalshi=868, poly=1098)
+[sample:canary] 25/30  {'kalshi': 15, 'polymarket': 10}
+[http] network calls this build: 0, cache hits: 14503
+FILTER FUNNEL (main):
+{
+  "drop:closed_before_t0_plus_1d": 653,
+  "drop:created_before_window": 55820,
+  "drop:kalshi_closed_early_gt_3d": 3110,
+  "drop:lifetime_lt_7d": 66913,
+  "drop:no_price_within_window": 5,
+  "drop:p_mkt_extreme": 80,
+  "drop:resolved_outside_window": 33,
+  "drop:scheduled_close_after_window": 15854,
+  "drop:title_short": 2,
+  "drop:volume": 52345,
+  "kalshi:drop:not_binary_or_unresolved": 4188,
+  "kalshi:markets_seen": 138252,
+  "kalshi:series_allowed": 9381,
+  "kalshi:series_listed": 9990,
+  "pass_static": 8852,
+  "poly:drop:category_or_excluded_tag": 612717,
+  "poly:drop:not_binary_yes_no_or_unresolved": 745,
+  "poly:events_listed": 63224,
+  "poly:markets_seen": 70263,
+  "poly:windows_truncated_by_page_cap": 30,
+  "pool_events": 2036,
+  "pool_kalshi": 5254,
+  "pool_polymarket": 3598,
+  "price_checked": 335,
+  "closed_before_t0_plus_1d_yes_rate": 0.4533
+}
+FILTER FUNNEL (canary):
+{
+  "drop:closed_before_t0_plus_1d": 120,
+  "drop:kalshi_closed_early_gt_3d": 56,
+  "drop:lifetime_lt_7d": 5820,
+  "drop:no_price_within_window": 3,
+  "drop:p_mkt_extreme": 3,
+  "drop:resolved_outside_window": 4717,
+  "drop:scheduled_close_after_window": 122819,
+  "drop:volume": 5138,
+  "kalshi:drop:not_binary_or_unresolved": 4188,
+  "kalshi:markets_seen": 138252,
+  "kalshi:series_allowed": 9381,
+  "kalshi:series_listed": 9990,
+  "pass_static": 1966,
+  "poly:drop:category_or_excluded_tag": 10318,
+  "poly:drop:not_binary_yes_no_or_unresolved": 91,
+  "poly:events_listed": 5419,
+  "poly:markets_seen": 6663,
+  "poly:windows_truncated_by_page_cap": 0,
+  "pool_events": 653,
+  "pool_kalshi": 868,
+  "pool_polymarket": 1098,
+  "price_checked": 36,
+  "closed_before_t0_plus_1d_yes_rate": 0.6833
+}
+all: {"n": 250, "by_venue": {"polymarket": 125, "kalshi": 125}, "by_category": {"Climate and Weather": 15, "Economics": 59, "Elections": 27, "Financials": 46, "Politics": 65, "Science and Technology": 16, "World": 22}, "by_split": {"dev": 50, "test": 200}, "base_rate_yes": 0.404, "mean_p_mkt": 0.3675, "p_mkt_source": {"last_trade": 126, "mid": 115, "previous": 9}, "n_events": 158, "t0_range": ["2026-02-08T18:00:00Z", "2026-09-24T21:00:00Z"]}
+dev: {"n": 50, "by_venue": {"polymarket": 21, "kalshi": 29}, "by_category": {"Climate and Weather": 7, "Economics": 13, "Elections": 2, "Financials": 9, "Politics": 16, "World": 3}, "by_split": {"dev": 50}, "base_rate_yes": 0.4, "mean_p_mkt": 0.3724, "p_mkt_source": {"last_trade": 22, "mid": 25, "previous": 3}, "n_events": 32, "t0_range": ["2026-02-08T18:00:00Z", "2026-03-26T01:00:00Z"]}
+test: {"n": 200, "by_venue": {"polymarket": 104, "kalshi": 96}, "by_category": {"Climate and Weather": 8, "Economics": 46, "Elections": 25, "Financials": 37, "Politics": 49, "Science and Technology": 16, "World": 19}, "by_split": {"test": 200}, "base_rate_yes": 0.405, "mean_p_mkt": 0.3663, "p_mkt_source": {"last_trade": 104, "mid": 90, "previous": 6}, "n_events": 126, "t0_range": ["2026-03-26T08:00:00Z", "2026-09-24T21:00:00Z"]}
+canary: {"n": 30, "by_venue": {"kalshi": 15, "polymarket": 15}, "by_category": {"Climate and Weather": 2, "Companies": 1, "Economics": 3, "Elections": 5, "Politics": 8, "Science and Technology": 6, "World": 5}, "by_split": {"canary": 30}, "base_rate_yes": 0.4333, "mean_p_mkt": 0.3262, "p_mkt_source": {"mid": 13, "last_trade": 15, "previous": 2}, "n_events": 22, "t0_range": ["2025-01-12T14:00:00Z", "2025-05-28T14:00:00Z"]}
+[exit 0]
+$ uv run python -m mf.data.dataset --validate
+OK 250 questions (dev=50 test=200) canary=30
 [exit 0]
 ```

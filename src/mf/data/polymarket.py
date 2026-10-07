@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from mf.core import timeutil
 from mf.core.http import CachedHttp
@@ -93,6 +93,8 @@ def parse_resolution(m: dict) -> int | None:
 class PolymarketClient:
     def __init__(self, http: CachedHttp):
         self.http = http
+        # windows whose volume-ordered listing hit the page cap before reaching min_volume
+        self.truncated_windows: list[tuple] = []
 
     def events_page(self, closed: bool, end_min: datetime | None, end_max: datetime | None,
                     offset: int, limit: int = 100, use_cache: bool = True) -> list[dict]:
@@ -107,8 +109,7 @@ class PolymarketClient:
         d = self.http.get_json(f"{GAMMA}/events", params, use_cache=use_cache)
         return d if isinstance(d, list) else []
 
-    def events_by_volume(self, closed: bool, end_min, end_max, min_volume: float,
-                         max_pages: int = 300, use_cache: bool = True) -> list[dict]:
+    def _events_window(self, closed, end_min, end_max, min_volume, max_pages, use_cache) -> list[dict]:
         out = []
         for page in range(max_pages):
             evs = self.events_page(closed, end_min, end_max, offset=page * 100, use_cache=use_cache)
@@ -117,6 +118,24 @@ class PolymarketClient:
             out.extend(evs)
             if (to_float(evs[-1].get("volume")) or 0.0) < min_volume:
                 break
+        else:
+            self.truncated_windows.append((end_min, end_max, to_float(out[-1].get("volume")) if out else None))
+        return out
+
+    def events_by_volume(self, closed: bool, end_min, end_max, min_volume: float,
+                         max_pages: int = 20, use_cache: bool = True, window_days: int = 7) -> list[dict]:
+        """Gamma rejects offset > ~2000 ("use /events/keyset", which 500s with these filters), so the
+        end-date range is split into <= 7-day windows (30-day windows still hit the cap at ~$180k), each paginated by volume, then deduped."""
+        if end_min is None or end_max is None:
+            return self._events_window(closed, end_min, end_max, min_volume, max_pages, use_cache)
+        out, seen, lo = [], set(), end_min
+        while lo < end_max:
+            hi = min(lo + timedelta(days=window_days), end_max)
+            for ev in self._events_window(closed, lo, hi, min_volume, max_pages, use_cache):
+                if ev["id"] not in seen:
+                    seen.add(ev["id"])
+                    out.append(ev)
+            lo = hi
         return out
 
     def price_history(self, token_id: str, start: datetime, end: datetime,
