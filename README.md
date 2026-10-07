@@ -1,4 +1,4 @@
-# Claude Sonnet 5 vs. Kalshi & Polymarket: an LLM forecaster that loses to the market (and, uncalibrated, to a coin flip)
+# In Progress: attempt to beat the market
 
 A leak-free backtest of an LLM forecasting agent on 200 binary prediction-market questions, scored against
 the **real market price at the same moment**, plus a forward, hash-chained live track record. The agent
