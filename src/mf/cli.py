@@ -89,7 +89,11 @@ def evaluate(out: str = typer.Option("reports/metrics.json")) -> None:
 @app.command()
 def report() -> None:
     """Figures, reports/index.html, README/RESULTS metric blocks."""
-    _todo("report")
+    from mf.config import settings
+    from mf.eval.report import build_report
+
+    r = build_report(settings(), log=lambda m: typer.echo(m))
+    typer.echo(f"metrics_sha={r['metrics_sha']}")
 
 
 @app.command()
@@ -153,7 +157,20 @@ def audit_leakage(
     summarize: bool = typer.Option(False, "--summarize"),
 ) -> None:
     """Sample kept evidence for human leakage review, or summarize the filled CSV."""
-    _todo("audit-leakage")
+    from mf.config import settings
+    from mf.eval.audit import sample_audit, summarize_audit
+
+    s = settings()
+    if summarize:
+        r = summarize_audit(s)
+        typer.echo(f"audited={r['n']} verdicts={r['verdicts']} LEAK RATE={r['leak_rate']:.2%} "
+                   f"(leak or unsure {r['leak_or_unsure_rate']:.2%})")
+        if r["missing_verdicts"]:
+            typer.echo(f"MISSING human_verdict for rows {r['missing_verdicts']}")
+            raise typer.Exit(1)
+        return
+    path = sample_audit(s, n)
+    typer.echo(f"wrote {path.relative_to(s.root).as_posix()} ({n} rows); fill human_verdict with clean|leak|unsure")
 
 
 @app.command("verify-ledger")
