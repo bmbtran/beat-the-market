@@ -43,7 +43,9 @@ def retrieve(
     max_usd: Optional[float] = typer.Option(None, "--max-usd"),
 ) -> None:
     """Query generation -> Exa -> leakage filters -> Haiku relevance/summary."""
-    _todo("retrieve")
+    from mf.commands import retrieve as run
+
+    raise typer.Exit(run(split, limit, dry_run, allow_spend, max_usd, log=lambda m: typer.echo(m)))
 
 
 @app.command()
@@ -56,7 +58,9 @@ def forecast(
     max_usd: Optional[float] = typer.Option(None, "--max-usd"),
 ) -> None:
     """Reasoner samples (K prompt variants), aggregation, supervisor."""
-    _todo("forecast")
+    from mf.commands import forecast_cmd
+
+    raise typer.Exit(forecast_cmd(split, arms, limit, dry_run, allow_spend, max_usd, log=lambda m: typer.echo(m)))
 
 
 @app.command()
@@ -101,7 +105,9 @@ def pilot(
     max_usd: Optional[float] = typer.Option(None, "--max-usd"),
 ) -> None:
     """Run the full pipeline on N dev questions and project total cost."""
-    _todo("pilot")
+    from mf.commands import pilot_cmd
+
+    raise typer.Exit(pilot_cmd(n, allow_spend, max_usd, log=lambda m: typer.echo(m)))
 
 
 @app.command("audit-leakage")
@@ -140,7 +146,12 @@ def fixtures_record() -> None:
 
 @batch_app.command("resume")
 def batch_resume() -> None:
-    _todo("batch resume")
+    from mf.llm.batch import resume_all
+    from mf.runtime import make_ctx
+
+    ctx = make_ctx(prefix="bt-batch-resume", allow_spend=True)
+    done = resume_all(ctx.llm, ctx.s.state_dir, log=lambda m: typer.echo(m))
+    typer.echo(f"resumed {len(done)} batch(es): {done}")
 
 
 if __name__ == "__main__":

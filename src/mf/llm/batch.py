@@ -129,11 +129,11 @@ def run_batch(llm: CachedLLM, reqs: list[LLMRequest], state_dir: Path, log=print
     return out
 
 
-def resume_all(llm: CachedLLM, state_dir: Path, log=print) -> list[str]:
+def resume_all(llm: CachedLLM, state_dir: Path, log=print, poll_seconds: float = POLL_SECONDS) -> list[str]:
     done = []
     for p in sorted((state_dir / "batches").glob("*.json")):
         st = json.loads(p.read_text(encoding="utf-8"))
         if st.get("status") != "collected":
-            collect(llm, st["batch_id"], state_dir, log=log)
+            collect(llm, st["batch_id"], state_dir, poll_seconds=poll_seconds, log=log)
             done.append(st["batch_id"])
     return done

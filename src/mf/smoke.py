@@ -28,7 +28,7 @@ def _req(prompt_id: str, model: str, max_tokens: int, op: str, sample_idx: int =
 
 
 def run(allow_spend: bool, exa_type: str | None = None, log=print) -> int:
-    ctx = make_ctx(run_id="smoke", max_usd=0.50, allow_spend=allow_spend)
+    ctx = make_ctx(prefix="smoke", max_usd=0.50, allow_spend=allow_spend)
     s = ctx.s
     exa_type = exa_type or s.pipeline.exa_type
     spent0 = ctx.budget.spent()

@@ -16,6 +16,7 @@ reasoner_max_tokens = 1200
 helper_max_tokens = 1500
 
 [pipeline]
+run_name = "backtest_v1"       # data/runs/<run_name>/
 k_samples = 5
 reasoning_prompts = ["r1_halawi_scratchpad_v1","r2_base_rates_v1","r3_inside_outside_view_v1","r4_premortem_both_sides_v1","r5_superforecaster_checklist_v1"]
 query_prompt = "query_gen_v1"

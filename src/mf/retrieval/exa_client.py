@@ -34,6 +34,8 @@ class ExaClient:
         self._http = http
         self.n_calls = 0
         self.n_hits = 0
+        self.network_calls = 0
+        self.cost_log: list[tuple[str, float, bool]] = []
 
     def _client(self) -> httpx.Client:
         if self._http is None:
@@ -62,6 +64,7 @@ class ExaClient:
     @retry(retry=retry_if_exception(_retryable), wait=wait_exponential_jitter(initial=1, max=30),
            stop=stop_after_attempt(5), reraise=True)
     def _post(self, body: dict) -> dict:
+        self.network_calls += 1
         r = self._client().post(EXA_URL, json=body)
         r.raise_for_status()
         return r.json()
@@ -83,6 +86,7 @@ class ExaClient:
         entry, hit = cached_call(self.cache, self.budget, "exa", key, body, est, call, op=f"search_{search_type}")
         self.n_calls += 1
         self.n_hits += hit
+        self.cost_log.append((f"search_{search_type}", float(entry.get("cost_usd") or 0.0), hit))
         return entry["response"], hit
 
     def is_cached(self, body: dict) -> bool:

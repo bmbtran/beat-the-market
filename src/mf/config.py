@@ -43,6 +43,7 @@ class ModelsCfg(BaseModel):
 
 
 class PipelineCfg(BaseModel):
+    run_name: str
     k_samples: int
     reasoning_prompts: list[str]
     query_prompt: str
@@ -116,6 +117,10 @@ class Settings(BaseModel):
     @property
     def reports_dir(self) -> Path:
         return self.root / "reports"
+
+    @property
+    def run_dir(self) -> Path:
+        return self.data_dir / "runs" / self.pipeline.run_name
 
 
 def load_settings(root: Path | None = None) -> Settings:

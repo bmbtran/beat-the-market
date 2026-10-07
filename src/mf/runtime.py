@@ -45,10 +45,12 @@ class _DenyHttp:
         _deny()
 
 
-def make_ctx(run_id: str | None = None, max_usd: float | None = None, allow_spend: bool = False,
+def make_ctx(prefix: str = "run", max_usd: float | None = None, allow_spend: bool = False,
              llm_client=None, exa_http=None) -> Ctx:
+    """run_id = <prefix>-<UTC timestamp>: the per-run --max-usd cap applies to one invocation.
+    Prefixes starting with "live" are exempt from the backtest sub-cap (never from the total cap)."""
     s = settings()
-    run_id = run_id or f"run-{timeutil.now().strftime('%Y%m%dT%H%M%SZ')}"
+    run_id = f"{prefix}-{timeutil.now().strftime('%Y%m%dT%H%M%SZ')}"
     cache = Cache(s.cache_dir)
     budget = BudgetGuard(s.state_dir / "ledger.jsonl", s.budget, run_id=run_id, max_usd=max_usd,
                          pending_fn=lambda: pending_batch_reservations(s.state_dir))

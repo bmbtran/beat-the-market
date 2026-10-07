@@ -190,6 +190,8 @@ class CachedLLM:
         self.budget = budget
         self.n_calls = 0
         self.n_hits = 0
+        self.network_calls = 0
+        self.cost_log: list[tuple[str, float, bool]] = []  # (op, cost_usd, cache_hit)
 
     @property
     def client(self) -> LLMClient:
@@ -211,6 +213,7 @@ class CachedLLM:
 
         def call():
             t = time.monotonic()
+            self.network_calls += 1
             resp = self.client.create(params)
             resp["latency_s"] = round(time.monotonic() - t, 2)
             cost = usage_cost(req.model, resp, batch=False)
@@ -221,4 +224,5 @@ class CachedLLM:
                                  sdk_version=getattr(self._client, "sdk_version", None))
         self.n_calls += 1
         self.n_hits += hit
+        self.cost_log.append((req.op, float(entry.get("cost_usd") or 0.0), hit))
         return result_from_cached(entry, key, hit)
