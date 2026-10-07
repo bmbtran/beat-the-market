@@ -1,0 +1,104 @@
+{
+ "anthropic_backtest_cap_usd": 23.0,
+ "anthropic_backtest_usd": 13.955241,
+ "anthropic_cap_usd": 30.0,
+ "anthropic_total_usd": 13.955241,
+ "by_provider_op_month": [
+  {
+   "calls": 250,
+   "month": "2026-10",
+   "op": "query_gen",
+   "provider": "anthropic",
+   "usd": 0.139233
+  },
+  {
+   "calls": 85,
+   "month": "2026-10",
+   "op": "reason",
+   "provider": "anthropic",
+   "usd": 0.58612
+  },
+  {
+   "calls": 1200,
+   "month": "2026-10",
+   "op": "reason_batch",
+   "provider": "anthropic",
+   "usd": 4.56766
+  },
+  {
+   "calls": 50,
+   "month": "2026-10",
+   "op": "reason_noret",
+   "provider": "anthropic",
+   "usd": 0.32131
+  },
+  {
+   "calls": 1150,
+   "month": "2026-10",
+   "op": "reason_noret_batch",
+   "provider": "anthropic",
+   "usd": 4.05287
+  },
+  {
+   "calls": 362,
+   "month": "2026-10",
+   "op": "relevance_summary",
+   "provider": "anthropic",
+   "usd": 2.610746
+  },
+  {
+   "calls": 1,
+   "month": "2026-10",
+   "op": "smoke_batch_batch",
+   "provider": "anthropic",
+   "usd": 4.6e-05
+  },
+  {
+   "calls": 1,
+   "month": "2026-10",
+   "op": "smoke_helper",
+   "provider": "anthropic",
+   "usd": 9.2e-05
+  },
+  {
+   "calls": 1,
+   "month": "2026-10",
+   "op": "smoke_reasoner",
+   "provider": "anthropic",
+   "usd": 0.000862
+  },
+  {
+   "calls": 126,
+   "month": "2026-10",
+   "op": "supervisor_disagree",
+   "provider": "anthropic",
+   "usd": 1.201834
+  },
+  {
+   "calls": 126,
+   "month": "2026-10",
+   "op": "supervisor_update",
+   "provider": "anthropic",
+   "usd": 0.474468
+  },
+  {
+   "calls": 19,
+   "month": "2026-10",
+   "op": "search_fast",
+   "provider": "exa",
+   "usd": 0.133
+  },
+  {
+   "calls": 758,
+   "month": "2026-10",
+   "op": "search_instant",
+   "provider": "exa",
+   "usd": 3.032
+  }
+ ],
+ "exa_by_month_usd": {
+  "2026-10": 3.165
+ },
+ "exa_monthly_cap_usd": 9.0,
+ "n_paid_calls": 4129
+}

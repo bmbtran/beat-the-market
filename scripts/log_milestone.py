@@ -7,6 +7,7 @@ Exits non-zero (and still logs, marked FAIL) if any command fails.
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -20,8 +21,14 @@ def main() -> int:
     chunks, ok = [], True
     env = dict(os.environ, PYTHONIOENCODING="utf-8", COLUMNS="100", NO_COLOR="1")
     for cmd in cmds:
-        p = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True,
-                           encoding="utf-8", errors="replace", env=env)
+        # Support POSIX-style leading `VAR=value` assignments (cmd.exe on Windows does not).
+        run_env, rest = dict(env), cmd
+        while re.match(r"^[A-Z_][A-Z0-9_]*=\S+\s", rest):
+            assign, rest = rest.split(None, 1)
+            k, v = assign.split("=", 1)
+            run_env[k] = v
+        p = subprocess.run(rest, shell=True, cwd=ROOT, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", env=run_env)
         out = (p.stdout + p.stderr).rstrip()
         chunks.append(f"$ {cmd}\n{out}\n[exit {p.returncode}]")
         ok &= p.returncode == 0

@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 
 import matplotlib
+import matplotlib.ticker
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -31,6 +32,7 @@ ARM_LABELS = {
     "market_ens_aia": "AIA ⊕ market (CV)", "market_ens_aia_devw": "AIA ⊕ market (dev w)",
 }
 ORDER = list(ARM_LABELS)
+SHORT = {"aia": "AIA", "halawi": "Halawi", "market": "Market"}
 
 
 def _style():
@@ -41,6 +43,7 @@ def _style():
         "axes.spines.top": False, "axes.spines.right": False, "font.size": 10, "axes.titlesize": 11,
         "axes.titleweight": "bold", "axes.titlelocation": "left", "legend.frameon": False,
         "lines.linewidth": 2, "lines.solid_capstyle": "round", "svg.hashsalt": "mf", "figure.dpi": 100,
+        "axes.axisbelow": True,
     })
 
 
@@ -60,7 +63,7 @@ def fig_reliability(m: dict, path: Path) -> None:
         ax = axes[0, j]
         ax.plot([0, 1], [0, 1], color=INK2, linewidth=1, alpha=0.5)
         ax.plot(xs, ys, color=ARM_COLORS[a], marker="o", markersize=7, markeredgecolor=SURFACE, markeredgewidth=2)
-        ax.set_title(f"{ARM_LABELS[a]}  (ECE {m['arms'][a]['ece']:.3f})")
+        ax.set_title(f"{SHORT[a]}  ·  ECE {m['arms'][a]['ece']:.3f}")
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
         if j == 0:
@@ -109,6 +112,7 @@ def fig_delta_forest(m: dict, path: Path) -> None:
         ax.set_yticks(y, [ARM_LABELS[a] for a in arms])
         ax.set_title(f"ΔBrier vs {ref} (left of 0 = better)")
         ax.set_xlabel("Paired ΔBrier, 95% cluster-bootstrap CI")
+        ax.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
         ax.grid(axis="y", visible=False)
     fig.tight_layout()
     _save(fig, path)
@@ -128,7 +132,7 @@ def fig_scatter(m: dict, path: Path) -> None:
     ax.set_xlabel("Market price at t0")
     ax.set_ylabel("AIA forecast")
     ax.set_title("AIA forecast vs. market, by outcome")
-    ax.legend(loc="upper left")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=2)
     _save(fig, path)
 
 
@@ -147,7 +151,8 @@ def fig_horizon(m: dict, path: Path) -> None:
     ax.set_xticks(x, [f"{b}\n(n={bd[b]['n']})" for b in buckets])
     ax.set_ylabel("Brier (lower is better)")
     ax.set_title("Brier by forecast horizon (time from t0 to scheduled close)")
-    ax.legend(loc="upper left", ncol=3)
+    ax.set_ylim(0, max(bd[b][a] for b in buckets for a in arms) * 1.15)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=3)
     ax.grid(axis="x", visible=False)
     _save(fig, path)
 

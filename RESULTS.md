@@ -10,7 +10,31 @@ _Pending: `uv run python scripts/verify.py` output goes here once the project is
 ## Headline
 
 <!-- METRICS:START -->
-_Pending: populated by `mf report` after the M8 backtest._
+_Auto-generated from `reports/metrics.json` by `mf report`. Test set: 200 questions (126 events) scored of 200; test YES rate 0.405; paired cluster bootstrap B=10000 by event._
+
+| Arm | Brier | 95% CI | Log loss | ECE | BSS vs market |
+|---|---|---|---|---|---|
+| Constant 0.5 (`const_0.5`) | 0.2500 | [0.2500, 0.2500] | 0.6931 | 0.0950 | -0.4919 |
+| Dev base rate (`base_rate`) | 0.2410 | [0.2287, 0.2533] | 0.6750 | 0.0050 | -0.4382 |
+| Market price at t0 (`market`) | 0.1676 | [0.1382, 0.1978] | 0.4993 | 0.0766 | +0.0000 |
+| No retrieval, 1 sample (`noret_single`) | 0.2787 | [0.2366, 0.3197] | 0.8563 | 0.1911 | -0.6629 |
+| No retrieval, K=5 (`noret_ens`) | 0.2802 | [0.2378, 0.3221] | 0.8533 | 0.2167 | -0.6720 |
+| Retrieval, 1 sample (`halawi_single`) | 0.2769 | [0.2337, 0.3210] | 0.8464 | 0.2093 | -0.6526 |
+| Halawi (retrieval, K=5) (`halawi`) | 0.2794 | [0.2364, 0.3227] | 0.8493 | 0.2020 | -0.6673 |
+| Halawi + Platt √3 (`halawi_platt`) | 0.3140 | [0.2612, 0.3671] | 1.1241 | 0.2764 | -0.8739 |
+| Halawi + supervisor (`halawi_sup`) | 0.2695 | [0.2280, 0.3122] | 0.8203 | 0.1926 | -0.6081 |
+| AIA (supervisor + Platt √3) (`aia`) | 0.3029 | [0.2515, 0.3554] | 1.0808 | 0.2651 | -0.8076 |
+| AIA, Platt fit on dev (`aia_platt_fit`) | 0.2375 | [0.2121, 0.2632] | 0.6728 | 0.0888 | -0.4174 |
+| Halawi ⊕ market (`market_ens_halawi`) | 0.1682 | [0.1387, 0.1985] | 0.5019 | 0.0706 | -0.0038 |
+| AIA ⊕ market (CV) (`market_ens_aia`) | 0.1688 | [0.1392, 0.1991] | 0.5045 | 0.0687 | -0.0074 |
+| AIA ⊕ market (dev w) (`market_ens_aia_devw`) | 0.1763 | [0.1472, 0.2069] | 0.5346 | 0.0624 | -0.0519 |
+
+**Pre-registered primary comparisons** (paired ΔBrier, negative = first arm better):
+
+- `aia_minus_halawi`: +0.0235 (95% CI [+0.0058, +0.0394]; P(Δ<0) = 0.005)
+- `market_ens_aia_minus_market`: +0.0012 (95% CI [+0.0004, +0.0021]; P(Δ<0) = 0.003)
+
+**Leak canary** (no retrieval, K=5): canary Brier 0.1629 (n=30, market 0.1901) vs test Brier 0.2802 (market 0.1676).
 <!-- METRICS:END -->
 
 ## What didn't work
@@ -391,5 +415,268 @@ $ uv run mf pilot --n 10 --allow-spend
 }
 PROJECTED backtest: $11.96 anthropic, $3.00 exa (remaining: $21.83 anthropic backtest, $8.57 exa this month)
 PILOT: projection within caps
+[exit 0]
+```
+
+### M8 — Full backtest (FAIL, 2026-10-07)
+
+```
+$ uv run python scripts/check_metrics_arms.py
+arms: 14 missing: [] without CI: [] n_test_scored: 200
+CHECK1 OK
+[exit 0]
+$ MF_CACHE_MODE=readonly uv run mf evaluate --out reports/metrics_repro.json
+'MF_CACHE_MODE' is not recognized as an internal or external command,
+operable program or batch file.
+[exit 1]
+$ uv run python -c "import json;a=json.load(open('reports/metrics.json'));b=json.load(open('reports/metrics_repro.json'));assert a==b;print('REPRO OK')"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: 'reports/metrics_repro.json'
+[exit 1]
+$ uv run mf budget
+{
+  "anthropic_backtest_cap_usd": 23.0,
+  "anthropic_backtest_usd": 13.955241,
+  "anthropic_cap_usd": 30.0,
+  "anthropic_total_usd": 13.955241,
+  "by_provider_op_month": [
+    {
+      "calls": 250,
+      "month": "2026-10",
+      "op": "query_gen",
+      "provider": "anthropic",
+      "usd": 0.139233
+    },
+    {
+      "calls": 85,
+      "month": "2026-10",
+      "op": "reason",
+      "provider": "anthropic",
+      "usd": 0.58612
+    },
+    {
+      "calls": 1200,
+      "month": "2026-10",
+      "op": "reason_batch",
+      "provider": "anthropic",
+      "usd": 4.56766
+    },
+    {
+      "calls": 50,
+      "month": "2026-10",
+      "op": "reason_noret",
+      "provider": "anthropic",
+      "usd": 0.32131
+    },
+    {
+      "calls": 1150,
+      "month": "2026-10",
+      "op": "reason_noret_batch",
+      "provider": "anthropic",
+      "usd": 4.05287
+    },
+    {
+      "calls": 362,
+      "month": "2026-10",
+      "op": "relevance_summary",
+      "provider": "anthropic",
+      "usd": 2.610746
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_batch_batch",
+      "provider": "anthropic",
+      "usd": 4.6e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_helper",
+      "provider": "anthropic",
+      "usd": 9.2e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_reasoner",
+      "provider": "anthropic",
+      "usd": 0.000862
+    },
+    {
+      "calls": 126,
+      "month": "2026-10",
+      "op": "supervisor_disagree",
+      "provider": "anthropic",
+      "usd": 1.201834
+    },
+    {
+      "calls": 126,
+      "month": "2026-10",
+      "op": "supervisor_update",
+      "provider": "anthropic",
+      "usd": 0.474468
+    },
+    {
+      "calls": 19,
+      "month": "2026-10",
+      "op": "search_fast",
+      "provider": "exa",
+      "usd": 0.133
+    },
+    {
+      "calls": 758,
+      "month": "2026-10",
+      "op": "search_instant",
+      "provider": "exa",
+      "usd": 3.032
+    }
+  ],
+  "exa_by_month_usd": {
+    "2026-10": 3.165
+  },
+  "exa_monthly_cap_usd": 9.0,
+  "n_paid_calls": 4129
+}
+Anthropic: $13.9552 of $30.00 total (backtest $13.9552 of $23.00)
+Exa 2026-10: $3.1650 of $9.00
+BUDGET OK: all caps respected
+[exit 0]
+```
+
+_The FAIL above is a logging-harness bug (cmd.exe does not accept the POSIX `VAR=value cmd` prefix), not a project failure; `scripts/log_milestone.py` was fixed and M8 re-run below._
+
+### M8 — Full backtest (re-run after logger fix) (PASS, 2026-10-07)
+
+```
+$ uv run python scripts/check_metrics_arms.py
+arms: 14 missing: [] without CI: [] n_test_scored: 200
+CHECK1 OK
+[exit 0]
+$ MF_CACHE_MODE=readonly uv run mf evaluate --out reports/metrics_repro.json
+wrote reports/metrics_repro.json: n_test_scored=200 events=126 failed={'noret_single': 0, 'noret_ens': 0, 'halawi_single': 0, 'halawi': 0, 'halawi_sup': 0}
+  const_0.5        Brier 0.2500  95% CI [0.2500, 0.2500]
+  base_rate        Brier 0.2410  95% CI [0.2287, 0.2533]
+  market           Brier 0.1676  95% CI [0.1382, 0.1978]
+  noret_ens        Brier 0.2802  95% CI [0.2378, 0.3221]
+  halawi           Brier 0.2794  95% CI [0.2364, 0.3227]
+  halawi_sup       Brier 0.2695  95% CI [0.2280, 0.3122]
+  aia              Brier 0.3029  95% CI [0.2515, 0.3554]
+  market_ens_aia   Brier 0.1688  95% CI [0.1392, 0.1991]
+  PRIMARY aia_minus_halawi: dBrier +0.0235 [+0.0058, +0.0394] P(d<0)=0.005
+  PRIMARY market_ens_aia_minus_market: dBrier +0.0012 [+0.0004, +0.0021] P(d<0)=0.003
+[exit 0]
+$ uv run python -c "import json;a=json.load(open('reports/metrics.json'));b=json.load(open('reports/metrics_repro.json'));assert a==b;print('REPRO OK')"
+REPRO OK
+[exit 0]
+$ uv run mf budget
+{
+  "anthropic_backtest_cap_usd": 23.0,
+  "anthropic_backtest_usd": 13.955241,
+  "anthropic_cap_usd": 30.0,
+  "anthropic_total_usd": 13.955241,
+  "by_provider_op_month": [
+    {
+      "calls": 250,
+      "month": "2026-10",
+      "op": "query_gen",
+      "provider": "anthropic",
+      "usd": 0.139233
+    },
+    {
+      "calls": 85,
+      "month": "2026-10",
+      "op": "reason",
+      "provider": "anthropic",
+      "usd": 0.58612
+    },
+    {
+      "calls": 1200,
+      "month": "2026-10",
+      "op": "reason_batch",
+      "provider": "anthropic",
+      "usd": 4.56766
+    },
+    {
+      "calls": 50,
+      "month": "2026-10",
+      "op": "reason_noret",
+      "provider": "anthropic",
+      "usd": 0.32131
+    },
+    {
+      "calls": 1150,
+      "month": "2026-10",
+      "op": "reason_noret_batch",
+      "provider": "anthropic",
+      "usd": 4.05287
+    },
+    {
+      "calls": 362,
+      "month": "2026-10",
+      "op": "relevance_summary",
+      "provider": "anthropic",
+      "usd": 2.610746
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_batch_batch",
+      "provider": "anthropic",
+      "usd": 4.6e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_helper",
+      "provider": "anthropic",
+      "usd": 9.2e-05
+    },
+    {
+      "calls": 1,
+      "month": "2026-10",
+      "op": "smoke_reasoner",
+      "provider": "anthropic",
+      "usd": 0.000862
+    },
+    {
+      "calls": 126,
+      "month": "2026-10",
+      "op": "supervisor_disagree",
+      "provider": "anthropic",
+      "usd": 1.201834
+    },
+    {
+      "calls": 126,
+      "month": "2026-10",
+      "op": "supervisor_update",
+      "provider": "anthropic",
+      "usd": 0.474468
+    },
+    {
+      "calls": 19,
+      "month": "2026-10",
+      "op": "search_fast",
+      "provider": "exa",
+      "usd": 0.133
+    },
+    {
+      "calls": 758,
+      "month": "2026-10",
+      "op": "search_instant",
+      "provider": "exa",
+      "usd": 3.032
+    }
+  ],
+  "exa_by_month_usd": {
+    "2026-10": 3.165
+  },
+  "exa_monthly_cap_usd": 9.0,
+  "n_paid_calls": 4129
+}
+Anthropic: $13.9552 of $30.00 total (backtest $13.9552 of $23.00)
+Exa 2026-10: $3.1650 of $9.00
+BUDGET OK: all caps respected
 [exit 0]
 ```
