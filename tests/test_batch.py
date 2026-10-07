@@ -65,3 +65,13 @@ def test_pending_batch_counts_toward_caps(tmp_path):
     fake, llm, budget = setup(tmp_path)
     B.submit(llm, reqs(), tmp_path / "state")
     assert budget.reserved("anthropic") == pytest.approx(B.pending_batch_reservations(tmp_path / "state"))
+
+
+def test_other_runs_pending_batches_count_globally_not_per_run(tmp_path):
+    fake, llm, _ = setup(tmp_path)
+    B.submit(llm, reqs(), tmp_path / "state")  # submitted by run "t"
+    other = BudgetGuard(tmp_path / "ledger.jsonl", CAPS, run_id="u", max_usd=0.05,
+                        pending_fn=lambda: B.pending_batch_reservations(tmp_path / "state"),
+                        run_pending_fn=lambda: B.pending_batch_reservations(tmp_path / "state", "u"))
+    assert other.reserved("anthropic") > 0.0      # global caps still see run t's batch
+    other.charge("anthropic", 0.01, "x")           # but run u's own per-run cap does not

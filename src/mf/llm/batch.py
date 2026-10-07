@@ -60,12 +60,13 @@ def submit(llm: CachedLLM, reqs: list[LLMRequest], state_dir: Path) -> str | Non
     return batch_id
 
 
-def pending_batch_reservations(state_dir: Path) -> float:
-    """Estimated $ of submitted-but-uncollected batches (counted by the budget guard)."""
+def pending_batch_reservations(state_dir: Path, run_id: str | None = None) -> float:
+    """Estimated $ of submitted-but-uncollected batches (counted by the budget guard).
+    run_id=None -> all runs (global caps); otherwise only batches submitted by that run (per-run cap)."""
     total = 0.0
     for p in (state_dir / "batches").glob("*.json"):
         st = json.loads(p.read_text(encoding="utf-8"))
-        if st.get("status") != "collected":
+        if st.get("status") != "collected" and (run_id is None or st.get("run_id") == run_id):
             total += st.get("est_usd", 0.0)
     return total
 

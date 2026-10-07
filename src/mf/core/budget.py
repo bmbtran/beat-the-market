@@ -55,7 +55,8 @@ def read_ledger(path: str | Path) -> list[LedgerEntry]:
 
 class BudgetGuard:
     def __init__(self, ledger_path: str | Path, caps, run_id: str, max_usd: float | None = None,
-                 now_fn: Callable = timeutil.now, pending_fn: Callable[[], float] | None = None):
+                 now_fn: Callable = timeutil.now, pending_fn: Callable[[], float] | None = None,
+                 run_pending_fn: Callable[[], float] | None = None):
         """caps: a BudgetCfg (anthropic_total_usd, anthropic_backtest_usd, exa_monthly_usd, ...)."""
         self.ledger_path = Path(ledger_path)
         self.caps = caps
@@ -64,6 +65,8 @@ class BudgetGuard:
         self.now_fn = now_fn
         # $ of submitted-but-uncollected batches (durable reservations kept in state/batches/)
         self.pending_fn = pending_fn or (lambda: 0.0)
+        # pending batches submitted by THIS run only (per-run cap must not count other runs' batches)
+        self.run_pending_fn = run_pending_fn or (lambda: 0.0)
         self._open: dict[int, Reservation] = {}
         self._ids = itertools.count(1)
         self.entries = read_ledger(self.ledger_path)
@@ -118,7 +121,8 @@ class BudgetGuard:
                     f"(spent+reserved+est = ${tot:.4f})")
         else:
             raise ValueError(f"unknown provider {provider!r}")
-        run_tot = self.run_spent() + self.reserved() + est_usd
+        own_open = sum(r.est_usd for r in self._open.values())
+        run_tot = self.run_spent() + own_open + self.run_pending_fn() + est_usd
         if run_tot > self.max_usd + EPS:
             raise BudgetExceeded(
                 f"per-run cap --max-usd ${self.max_usd:.2f} would be exceeded "

@@ -53,7 +53,8 @@ def make_ctx(prefix: str = "run", max_usd: float | None = None, allow_spend: boo
     run_id = f"{prefix}-{timeutil.now().strftime('%Y%m%dT%H%M%SZ')}"
     cache = Cache(s.cache_dir)
     budget = BudgetGuard(s.state_dir / "ledger.jsonl", s.budget, run_id=run_id, max_usd=max_usd,
-                         pending_fn=lambda: pending_batch_reservations(s.state_dir))
+                         pending_fn=lambda: pending_batch_reservations(s.state_dir),
+                         run_pending_fn=lambda: pending_batch_reservations(s.state_dir, run_id))
     if llm_client is not None:
         llm = CachedLLM(llm_client, cache, budget)
     elif allow_spend:
