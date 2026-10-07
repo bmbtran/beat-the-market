@@ -57,7 +57,8 @@ class ExaClient:
             "contents": {"highlights": {"maxCharacters": highlight_chars}},
         }
         if end_published is not None:
-            body["endPublishedDate"] = timeutil.iso(end_published).replace("Z", ".000Z")
+            # whole seconds only: Exa rejects "...:52.215343.000Z" (live mode passes now() with microseconds)
+            body["endPublishedDate"] = timeutil.iso(timeutil.parse(end_published).replace(microsecond=0)).replace("Z", ".000Z")
         if max_age_hours is not None:
             body["contents"]["maxAgeHours"] = max_age_hours
         if category:

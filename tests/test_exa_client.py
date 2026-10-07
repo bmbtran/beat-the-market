@@ -68,3 +68,9 @@ def test_recorded_smoke_fixtures_respect_date_filter(fixtures_dir):
         for r in d["response"]["results"]:
             if r.get("publishedDate"):
                 assert datetime.fromisoformat(r["publishedDate"].replace("Z", "+00:00")) <= end
+
+
+def test_end_date_with_microseconds_is_valid_iso():
+    dt = datetime(2026, 10, 7, 4, 48, 52, 215343, tzinfo=timezone.utc)
+    body = ExaClient.build_body("q", dt, 10, "instant", [], 1500, -1, "news")
+    assert body["endPublishedDate"] == "2026-10-07T04:48:52.000Z" and body["category"] == "news"
