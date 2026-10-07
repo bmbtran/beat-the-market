@@ -75,7 +75,9 @@ def main() -> int:
     for doc in ("RESULTS.md", "README.md"):
         text = (ROOT / doc).read_text(encoding="utf-8")
         if doc == "RESULTS.md":
-            hits = PLACEHOLDERS.findall(text)
+            # scan prose only: fenced blocks hold verbatim command output (which quotes these very words)
+            prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+            hits = PLACEHOLDERS.findall(prose)
             if hits:
                 return fail(f"RESULTS.md contains placeholders: {sorted(set(hits))}")
         if extract_block(text) != block:
