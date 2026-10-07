@@ -1,4 +1,4 @@
-# In Progress: attempt to beat the market
+# In Progress: an attempt to beat the market
 
 ## Inspirations:
 Halawi et al. 2024 (arXiv 2402.18563); AIA Forecaster technical report (arXiv 2511.07678); Neyman & Roughgarden 2022 (arXiv 2111.03153); Paleka et al., Pitfalls in Evaluating Language Model Forecasters (arXiv 2506.00723)
